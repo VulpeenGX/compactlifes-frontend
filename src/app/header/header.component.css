@@ -1,0 +1,114 @@
+.wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.wrap:after {
+  content: "";
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  bottom: -5px;
+  right: -5px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.wrap:hover:after {
+  opacity: 1;
+}
+
+/* Para pantallas grandes (lg) y superiores */
+@media (min-width: 1024px) {
+  #icon-profile {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #icon-profile:hover:after {
+    content: "";
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+  }
+
+  #icon-profile span {
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  /* Logo con nombre (se muestra solo en pantallas grandes) */
+  .flex-shrink-0 img:nth-child(2) {
+    display: block;  /* Muestra el logo con nombre */
+  }
+
+  /* Mostrar el div rojo solo en pantallas lg y superiores */
+  #navbar {
+    display: block;  /* Mostrar el div rojo en pantallas lg */
+  }
+
+  /* El icono de hamburguesa debe estar oculto en pantallas lg y superiores */
+  #icon-hamburger {
+    display: none; /* Ocultar en pantallas lg y superiores */
+  }
+
+  /* Mostrar el texto "Hey! Iniciar sesión" solo en pantallas xl y superiores */
+  @media (min-width: 1280px) {
+    #icon-profile span {
+      display: inline-block;  /* Mostrar el texto en pantallas xl y superiores */
+    }
+  }
+}
+
+/* Para pantallas pequeñas (menos de lg) */
+@media (max-width: 1023px) {
+  #icon-profile:hover:after {
+    opacity: 1;
+  }
+
+  #icon-profile span {
+    display: none;
+  }
+
+  /* El logo con nombre solo se muestra en pantallas grandes */
+  .flex-shrink-0 img:nth-child(2) {
+    display: none;
+  }
+
+  /* Mostrar el icono de hamburguesa en pantallas pequeñas */
+  #icon-hamburger {
+    display: block;
+  }
+}
+
+/* Cuando el div rojo aparece, oculta el icono de hamburguesa y muestra el texto en el perfil */
+#navbar ~ .flex ul #icon-hamburger {
+  display: none; /* Ocultar el icono de hamburguesa cuando el div rojo aparece */
+}
+
+/* Mostrar el texto de inicio de sesión en el perfil cuando el div rojo esté visible */
+#navbar ~ .flex ul #icon-profile span {
+  display: inline-block;  /* Mostrar cuando el div rojo aparece */
+}
+
+/* Ajustes para el div rojo */
+#navbar {
+  display: none; /* Por defecto, el div rojo está oculto */
+}
+
+/* Mostrar el div rojo solo en pantallas lg */
+@media (min-width: 1024px) {
+  #navbar {
+    display: block;  /* Mostrar el div rojo en pantallas lg y superiores */
+  }
+}

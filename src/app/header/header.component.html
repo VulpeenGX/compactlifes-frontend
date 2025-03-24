@@ -1,64 +1,154 @@
-<header class="header">
-  <div class="header__container">
-    <!-- Logo -->
-    <div>
-      <a href="#">
-        <img src="./assets/images/CompactLifes_logo.svg" alt="Logo" />
+<header class="bg-white shadow p-4">
+  <!-- Contenedor principal: Logo, Searchbar e Íconos -->
+  <div class="flex items-center justify-between sm:space-x-4">
+    <!-- Logo y Nombre de la Empresa (solo en lg y superiores) -->
+    <div class="flex-shrink-0 flex items-center space-x-2">
+      <a href="#" class="block flex items-center">
+        <!-- Logo pequeño (se ve en todas las pantallas) -->
+        <img src="./assets/images/CompactLifes_logo.svg" alt="Logo" class="w-20 sm:w-20 lg:w-20">
+        <!-- Nombre de la empresa (solo en lg y superiores) -->
+        <img src="./assets/images/nombre.png" alt="Nombre de la empresa" class="hidden lg:block w-auto h-6 ml-2">
       </a>
     </div>
-    <!-- ./logo -->
 
-    <!-- searchBar -->
-    <div class="max-w-md mx-auto">
-      <div
-        class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden"
-      >
-        <div class="grid place-items-center h-full w-12 text-gray-300">
-          <img src="./assets/icons/search.svg" alt="search-icon" />
+    <!-- Barra de búsqueda -->
+    <div class="hidden sm:flex sm:flex-grow sm:justify-center">
+      <form action="#" class="w-full max-w-3xl">
+        <div class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden hover:bg-gray-200">
+          <div class="grid place-items-center h-full w-12 text-gray-300">
+            <img src="./assets/icons/search.svg" alt="search-icon">
+          </div>
+          <input
+            class="peer h-full w-full outline-none text-[18px] text-black font-medium pr-2 bg-transparent"
+            type="text"
+            id="search"
+            placeholder="¿Qué buscar hoy?"
+          />
         </div>
-
-        <input
-          class="peer h-full w-full outline-none text-[18px] text-black font-medium pr-2"
-          type="text"
-          id="search"
-          placeholder="¿Que buscar hoy?"
-        />
-      </div>
+      </form>
     </div>
-    <!-- ./searchBar -->
-    
-    <!-- header-icons -->
-    <ul>
-      <li>
-        <a href="#"
-          ><span
-            ><img src="./assets/icons/profile.svg" alt="profile-icon" /></span
-        ></a>
+
+    <!-- Íconos -->
+    <ul class="flex space-x-5">
+      <li id="icon-profile" class="wrap flex items-center">
+        <a href="#" class="flex items-center">
+          <img src="./assets/icons/profile.svg" alt="profile-icon" class="w-6">
+          <!-- Texto "Hey! Iniciar sesión" solo en xl y superiores -->
+          <span class="hidden xl:block ml-2 text-sm text-gray-700">Hey! Iniciar sesión</span>
+        </a>
       </li>
-      <li>
-        <a href="#"
-          ><span
-            ><img src="./assets/icons/wishlist.svg" alt="wishlist-icon" /></span
-        ></a>
+      <li id="icon-wishlist" class="wrap">
+        <a href="#">
+          <img src="./assets/icons/wishlist.svg" alt="wishlist-icon" class="w-6">
+        </a>
       </li>
-      <li>
-        <a href="#"
-          ><span
-            ><img
-              src="./assets/icons/shoppingBag.svg"
-              alt="shoppingbag-icon" /></span
-        ></a>
+      <li id="icon-shoppingBag" class="wrap">
+        <a href="#">
+          <img src="./assets/icons/shoppingBag.svg" alt="shoppingbag-icon" class="w-6">
+        </a>
       </li>
-      <li>
-        <a href="#"
-          ><span
-            ><img
-              src="./assets/icons/hamburger.svg"
-              alt="hamburger-icon" /></span
-        ></a>
+      <!-- Ícono de hamburguesa solo en pantallas más pequeñas -->
+      <li id="icon-hamburger" class="wrap lg:hidden">
+        <a href="#">
+          <img src="./assets/icons/hamburger.svg" alt="hamburger-icon" class="w-6">
+        </a>
       </li>
     </ul>
-
-    <!-- ./header-icons -->
   </div>
+
+  <!-- Barra de búsqueda en móvil (debajo) -->
+  <div class="mt-4 sm:hidden">
+    <form action="#" class="w-full">
+      <div class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden hover:bg-gray-200">
+        <div class="grid place-items-center h-full w-12 text-gray-300">
+          <img src="./assets/icons/search.svg" alt="search-icon">
+        </div>
+        <input
+          class="peer h-full w-full outline-none text-[18px] text-black font-medium pr-2 bg-transparent"
+          type="text"
+          id="search-mobile"
+          placeholder="¿Qué buscar hoy?"
+        />
+      </div>
+    </form>
+  </div>
+
+  <div class="p-3 mt-3 hidden lg:block" id="navbar">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <ul class="flex space-x-8 py-4 border-b border-gray-300">
+                <!-- Productos -->
+                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'productos'}">
+                    <a href="#" (click)="selectTab('productos')" class="flex items-center text-gray-800 font-medium">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" alt="Productos Icono" class="w-5 h-5 mr-2">
+                        Productos
+                    </a>
+                    <div *ngIf="activeTab === 'productos'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
+                        <div class="grid grid-cols-3 gap-4 p-8">
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965544/pexels-photo-3965544.jpeg" alt="Producto 1" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 1</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965545/pexels-photo-3965545.jpeg" alt="Producto 2" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 2</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965546/pexels-photo-3965546.jpeg" alt="Producto 3" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 3</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Estancias -->
+                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'estancias'}">
+                    <a href="#" (click)="selectTab('estancias')" class="flex items-center text-gray-800 font-medium">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917996.png" alt="Estancias Icono" class="w-5 h-5 mr-2">
+                        Estancias
+                    </a>
+                    <div *ngIf="activeTab === 'estancias'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
+                        <div class="grid grid-cols-3 gap-4 p-8">
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965547/pexels-photo-3965547.jpeg" alt="Estancia 1" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 1</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965548/pexels-photo-3965548.jpeg" alt="Estancia 2" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 2</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965549/pexels-photo-3965549.jpeg" alt="Estancia 3" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 3</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Servicios -->
+                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'servicios'}">
+                    <a href="#" (click)="selectTab('servicios')" class="flex items-center text-gray-800 font-medium">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917997.png" alt="Servicios Icono" class="w-5 h-5 mr-2">
+                        Servicios
+                    </a>
+                    <div *ngIf="activeTab === 'servicios'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
+                        <div class="grid grid-cols-3 gap-4 p-8">
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965550/pexels-photo-3965550.jpeg" alt="Servicio 1" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 1</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965551/pexels-photo-3965551.jpeg" alt="Servicio 2" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 2</a>
+                            </div>
+                            <div>
+                                <img src="https://images.pexels.com/photos/3965552/pexels-photo-3965552.jpeg" alt="Servicio 3" class="w-48 h-32 object-cover rounded-md shadow-md">
+                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 3</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
 </header>
