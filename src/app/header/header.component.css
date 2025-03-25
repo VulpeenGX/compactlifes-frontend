@@ -112,3 +112,26 @@
     display: block;  /* Mostrar el div rojo en pantallas lg y superiores */
   }
 }
+
+.image-container {
+  width: 100%;
+  padding-top: 100%; /* Mantiene una relación de aspecto 1:1 (cuadrada) */
+  position: relative;
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+@media screen and (max-width: 1280px) {
+  .arrowHidden {
+    display: none;  
+  }
+}

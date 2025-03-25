@@ -1,12 +1,10 @@
 <header class="bg-white shadow p-4">
-  <!-- Contenedor principal: Logo, Searchbar e Íconos -->
+  <!-- Contenedor principal: Logo, Barra de búsqueda e Íconos -->
   <div class="flex items-center justify-between sm:space-x-4">
-    <!-- Logo y Nombre de la Empresa (solo en lg y superiores) -->
+    <!-- Logo y Nombre de la Empresa -->
     <div class="flex-shrink-0 flex items-center space-x-2">
-      <a href="#" class="block flex items-center">
-        <!-- Logo pequeño (se ve en todas las pantallas) -->
-        <img src="./assets/images/CompactLifes_logo.svg" alt="Logo" class="w-20 sm:w-20 lg:w-20">
-        <!-- Nombre de la empresa (solo en lg y superiores) -->
+      <a href="#" class="flex items-center">
+        <img src="./assets/images/CompactLifes_logo.svg" alt="Logo" class="w-20">
         <img src="./assets/images/nombre.png" alt="Nombre de la empresa" class="hidden lg:block w-auto h-6 ml-2">
       </a>
     </div>
@@ -29,34 +27,33 @@
     </div>
 
     <!-- Íconos -->
-    <ul class="flex space-x-5">
-      <li id="icon-profile" class="wrap flex items-center">
-        <a href="#" class="flex items-center">
-          <img src="./assets/icons/profile.svg" alt="profile-icon" class="w-6">
-          <!-- Texto "Hey! Iniciar sesión" solo en xl y superiores -->
-          <span class="hidden xl:block ml-2 text-sm text-gray-700">Hey! Iniciar sesión</span>
-        </a>
-      </li>
-      <li id="icon-wishlist" class="wrap">
-        <a href="#">
-          <img src="./assets/icons/wishlist.svg" alt="wishlist-icon" class="w-6">
-        </a>
-      </li>
-      <li id="icon-shoppingBag" class="wrap">
-        <a href="#">
-          <img src="./assets/icons/shoppingBag.svg" alt="shoppingbag-icon" class="w-6">
-        </a>
-      </li>
-      <!-- Ícono de hamburguesa solo en pantallas más pequeñas -->
-      <li id="icon-hamburger" class="wrap lg:hidden">
-        <a href="#">
-          <img src="./assets/icons/hamburger.svg" alt="hamburger-icon" class="w-6">
-        </a>
-      </li>
-    </ul>
+<ul class="flex space-x-5">
+  <li id="icon-profile" class="wrap flex items-center">
+    <a href="#" class="flex items-center">
+      <img src="./assets/icons/profile.svg" alt="profile-icon" class="w-6">
+      <span class="hidden xl:block ml-2 text-sm text-gray-700">Hey! Iniciar sesión</span>
+    </a>
+  </li>
+  <li id="icon-wishlist" class="wrap">
+    <a href="#">
+      <img src="./assets/icons/wishlist.svg" alt="wishlist-icon" class="w-6">
+    </a>
+  </li>
+  <li id="icon-shoppingBag" class="wrap">
+    <a href="#">
+      <img src="./assets/icons/shoppingBag.svg" alt="shoppingbag-icon" class="w-6">
+    </a>
+  </li>
+  <li id="icon-hamburger" class="wrap lg:hidden">
+    <a href="#">
+      <img src="./assets/icons/hamburger.svg" alt="hamburger-icon" class="w-6">
+    </a>
+  </li>
+</ul>
+
   </div>
 
-  <!-- Barra de búsqueda en móvil (debajo) -->
+  <!-- Barra de búsqueda en móvil -->
   <div class="mt-4 sm:hidden">
     <form action="#" class="w-full">
       <div class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden hover:bg-gray-200">
@@ -73,82 +70,55 @@
     </form>
   </div>
 
-  <div class="p-3 mt-3 hidden lg:block" id="navbar">
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto px-4">
-            <ul class="flex space-x-8 py-4 border-b border-gray-300">
-                <!-- Productos -->
-                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'productos'}">
-                    <a href="#" (click)="selectTab('productos')" class="flex items-center text-gray-800 font-medium">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" alt="Productos Icono" class="w-5 h-5 mr-2">
-                        Productos
-                    </a>
-                    <div *ngIf="activeTab === 'productos'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
-                        <div class="grid grid-cols-3 gap-4 p-8">
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965544/pexels-photo-3965544.jpeg" alt="Producto 1" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 1</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965545/pexels-photo-3965545.jpeg" alt="Producto 2" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 2</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965546/pexels-photo-3965546.jpeg" alt="Producto 3" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Producto 3</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <!-- Estancias -->
-                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'estancias'}">
-                    <a href="#" (click)="selectTab('estancias')" class="flex items-center text-gray-800 font-medium">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917996.png" alt="Estancias Icono" class="w-5 h-5 mr-2">
-                        Estancias
-                    </a>
-                    <div *ngIf="activeTab === 'estancias'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
-                        <div class="grid grid-cols-3 gap-4 p-8">
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965547/pexels-photo-3965547.jpeg" alt="Estancia 1" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 1</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965548/pexels-photo-3965548.jpeg" alt="Estancia 2" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 2</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965549/pexels-photo-3965549.jpeg" alt="Estancia 3" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Estancia 3</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <!-- Servicios -->
-                <li class="relative" [ngClass]="{'border-b-2 border-blue-500': activeTab === 'servicios'}">
-                    <a href="#" (click)="selectTab('servicios')" class="flex items-center text-gray-800 font-medium">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2917/2917997.png" alt="Servicios Icono" class="w-5 h-5 mr-2">
-                        Servicios
-                    </a>
-                    <div *ngIf="activeTab === 'servicios'" class="absolute left-0 top-16 w-screen bg-white shadow-lg z-20">
-                        <div class="grid grid-cols-3 gap-4 p-8">
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965550/pexels-photo-3965550.jpeg" alt="Servicio 1" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 1</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965551/pexels-photo-3965551.jpeg" alt="Servicio 2" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 2</a>
-                            </div>
-                            <div>
-                                <img src="https://images.pexels.com/photos/3965552/pexels-photo-3965552.jpeg" alt="Servicio 3" class="w-48 h-32 object-cover rounded-md shadow-md">
-                                <a href="#" class="block mt-2 text-gray-800 text-center hover:text-gray-600 hover:underline">Servicio 3</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<!-- Navbar -->
+<div class="p-3 mt-3 hidden lg:block" id="navbar">
+  <nav class="bg-white shadow-md">
+    <div class="container mx-auto px-4">
+      <ul class="flex space-x-8 py-4">
+        <li *ngFor="let item of menuItems" class="relative">
+          <a href="#" (click)="selectTab(item.nombre)" class="flex items-center text-gray-800 font-medium" [ngClass]="{'border-b-2 border-blue-500': activeTab === item.nombre}">
+            <img [src]="item.icono" [alt]="item.nombre + ' Icono'" class="w-5 h-5 mr-2">
+            {{ item.nombre }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<!-- Contenido desplegable -->
+<div class="absolute left-0 w-full bg-white shadow-lg z-20 hidden lg:block" *ngIf="activeTab">
+  <div class="container mx-auto px-4 py-8">
+    
+    <!-- Estructura especial para "Servicios" -->
+<div *ngIf="activeTab === 'Servicios'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div *ngFor="let bloque of obtenerElementosAgrupados(); let isLast = last" class="p-2 relative" [ngClass]="{'bg-blue-100': isLast, 'text-xl': isLast, 'rounded-md': isLast}">
+    <ul class="space-y-2">
+      <li *ngFor="let elemento of bloque; let isFirst = first" [ngClass]="{'font-black': isFirst}">
+        <a [href]="elemento.enlace" class="block text-gray-800 hover:underline">
+          {{ elemento.titulo }}
+        </a>
+      </li>
+    </ul>
+    
+    <!-- Flecha hacia abajo en el último div, dentro del bloque -->
+    <div *ngIf="isLast" class="absolute bottom-4 right-4 text-black">
+      <img src="./assets/icons/arrow.svg" alt="arrow-icon" class="arrowHidden">
+    </div>
+  </div>
+</div>
+
+
+    <!-- Estructura para otros apartados -->
+    <div *ngIf="activeTab !== 'Servicios'" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+      <div *ngFor="let elemento of elementosActivos" class="p-2">
+        <a [href]="elemento.enlace" class="block text-center text-gray-800 hover:underline">
+          <img [src]="elemento.imagen" [alt]="elemento.titulo" class="w-32 h-32 object-cover rounded-md shadow-md mx-auto">
+          <span class="mt-2 block">{{ elemento.titulo }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
 </header>
