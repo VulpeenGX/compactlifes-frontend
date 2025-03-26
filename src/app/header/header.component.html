@@ -27,30 +27,29 @@
     </div>
 
     <!-- Íconos -->
-<ul class="flex space-x-5">
-  <li id="icon-profile" class="wrap flex items-center">
-    <a href="#" class="flex items-center">
-      <img src="./assets/icons/profile.svg" alt="profile-icon" class="w-6">
-      <span class="hidden xl:block ml-2 text-sm text-gray-700">Hey! Iniciar sesión</span>
-    </a>
-  </li>
-  <li id="icon-wishlist" class="wrap">
-    <a href="#">
-      <img src="./assets/icons/wishlist.svg" alt="wishlist-icon" class="w-6">
-    </a>
-  </li>
-  <li id="icon-shoppingBag" class="wrap">
-    <a href="#">
-      <img src="./assets/icons/shoppingBag.svg" alt="shoppingbag-icon" class="w-6">
-    </a>
-  </li>
-  <li id="icon-hamburger" class="wrap lg:hidden">
-    <a href="#">
-      <img src="./assets/icons/hamburger.svg" alt="hamburger-icon" class="w-6">
-    </a>
-  </li>
-</ul>
-
+    <ul class="flex space-x-5">
+      <li id="icon-profile" class="wrap flex items-center">
+        <a href="#" class="flex items-center">
+          <img src="./assets/icons/profile.svg" alt="profile-icon" class="w-6">
+          <span class="hidden xl:block ml-2 text-sm text-gray-700">Hey! Iniciar sesión</span>
+        </a>
+      </li>
+      <li id="icon-wishlist" class="wrap">
+        <a href="#">
+          <img src="./assets/icons/wishlist.svg" alt="wishlist-icon" class="w-6">
+        </a>
+      </li>
+      <li id="icon-shoppingBag" class="wrap">
+        <a href="#">
+          <img src="./assets/icons/shoppingBag.svg" alt="shoppingbag-icon" class="w-6">
+        </a>
+      </li>
+      <li id="icon-hamburger" class="wrap lg:hidden">
+        <a href="#">
+          <img src="./assets/icons/hamburger.svg" alt="hamburger-icon" class="w-6">
+        </a>
+      </li>
+    </ul>
   </div>
 
   <!-- Barra de búsqueda en móvil -->
@@ -70,55 +69,52 @@
     </form>
   </div>
 
-<!-- Navbar -->
-<div class="p-3 mt-3 hidden lg:block" id="navbar">
-  <nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4">
-      <ul class="flex space-x-8 py-4">
-        <li *ngFor="let item of menuItems" class="relative">
-          <a href="#" (click)="selectTab(item.nombre)" class="flex items-center text-gray-800 font-medium" [ngClass]="{'border-b-2 border-blue-500': activeTab === item.nombre}">
-            <img [src]="item.icono" [alt]="item.nombre + ' Icono'" class="w-5 h-5 mr-2">
-            {{ item.nombre }}
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
-
-<!-- Contenido desplegable -->
-<div class="absolute left-0 w-full bg-white shadow-lg z-20 hidden lg:block" *ngIf="activeTab">
-  <div class="container mx-auto px-4 py-8">
-    
-    <!-- Estructura especial para "Servicios" -->
-<div *ngIf="activeTab === 'Servicios'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-  <div *ngFor="let bloque of obtenerElementosAgrupados(); let isLast = last" class="p-2 relative" [ngClass]="{'bg-blue-100': isLast, 'text-xl': isLast, 'rounded-md': isLast}">
-    <ul class="space-y-2">
-      <li *ngFor="let elemento of bloque; let isFirst = first" [ngClass]="{'font-black': isFirst}">
-        <a [href]="elemento.enlace" class="block text-gray-800 hover:underline">
-          {{ elemento.titulo }}
-        </a>
-      </li>
-    </ul>
-    
-    <!-- Flecha hacia abajo en el último div, dentro del bloque -->
-    <div *ngIf="isLast" class="absolute bottom-4 right-4 text-black">
-      <img src="./assets/icons/arrow.svg" alt="arrow-icon" class="arrowHidden">
-    </div>
+  <!-- Navbar -->
+  <div class="p-3 mt-3 hidden lg:block" id="navbar">
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-4">
+        <ul class="flex space-x-8 py-4">
+          <li *ngFor="let item of menuItems" class="relative">
+            <a href="#" (click)="selectTab(item.nombre)" class="flex items-center text-gray-800 font-medium" [ngClass]="{'border-b-2 border-blue-500': activeTab === item.nombre}">
+              <img [src]="item.icono" [alt]="item.nombre + ' Icono'" class="w-5 h-5 mr-2">
+              {{ item.nombre }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
-</div>
 
+  <!-- Contenido desplegable -->
+  <div class="w-full bg-white shadow-lg z-20 hidden lg:block" *ngIf="activeTab">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Estructura especial para "Servicios" -->
+      <div *ngIf="activeTab === 'Servicios'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div *ngFor="let bloque of obtenerElementosAgrupados(); let isLast = last" class="p-2 relative" [ngClass]="{'bg-blue-100': isLast, 'text-xl': isLast, 'rounded-md': isLast}">
+          <ul class="space-y-2">
+            <li *ngFor="let elemento of bloque; let isFirst = first" [ngClass]="{'font-black': isFirst}">
+              <a [href]="elemento.enlace" class="block text-gray-800 hover:underline">
+                {{ elemento.titulo }}
+              </a>
+            </li>
+          </ul>
+          
+          <!-- Flecha hacia abajo en el último div, dentro del bloque -->
+          <div *ngIf="isLast" class="absolute bottom-4 right-4 text-black">
+            <img src="./assets/icons/arrow.svg" alt="arrow-icon" class="arrowHidden">
+          </div>
+        </div>
+      </div>
 
-    <!-- Estructura para otros apartados -->
-    <div *ngIf="activeTab !== 'Servicios'" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
-      <div *ngFor="let elemento of elementosActivos" class="p-2">
-        <a [href]="elemento.enlace" class="block text-center text-gray-800 hover:underline">
-          <img [src]="elemento.imagen" [alt]="elemento.titulo" class="w-32 h-32 object-cover rounded-md shadow-md mx-auto">
-          <span class="mt-2 block">{{ elemento.titulo }}</span>
-        </a>
+      <!-- Estructura para otros apartados -->
+      <div *ngIf="activeTab !== 'Servicios'" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+        <div *ngFor="let elemento of elementosActivos" class="p-2">
+          <a [href]="elemento.enlace" class="block text-center text-gray-800 hover:underline">
+            <img [src]="elemento.imagen" [alt]="elemento.titulo" class="w-32 h-32 object-cover rounded-md shadow-md mx-auto">
+            <span class="mt-2 block">{{ elemento.titulo }}</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
 </header>
