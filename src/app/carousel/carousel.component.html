@@ -1,0 +1,25 @@
+<section class="product">
+    <h2 class="product-category">Special prices</h2>
+    <button class="pre-btn">
+      <img src="./assets/icons/arrow.svg" alt="Previous" />
+    </button>
+    <button class="nxt-btn">
+      <img src="./assets/icons/arrow.svg" alt="Next" />
+    </button>
+    <div class="product-container">
+      <div class="product-card" *ngFor="let product of products">
+        <div class="product-image">
+          <span class="discount-tag">{{ product.discount }}% off</span>
+          <img [src]="product.image" class="product-thumb" [alt]="product.brand" />
+          <button class="card-btn">Favoritos</button>
+          <button class="card-btn">Carrito</button>
+        </div>
+        <div class="product-info">
+          <h2 class="product-brand">{{ product.brand }}</h2>
+          <p class="product-short-description">{{ product.description }}</p>
+          <span class="price">{{ product.price }}€</span>
+          <span class="actual-price">{{ product.actualPrice }}€</span>
+        </div>
+      </div>
+    </div>
+  </section>
