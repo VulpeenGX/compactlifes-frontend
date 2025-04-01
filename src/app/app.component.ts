@@ -6,10 +6,10 @@ import { FooterComponent } from './footer/footer.component';
 import { CollageImagesComponent } from './collage-images/collage-images.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { BannerComponent } from './banner/banner.component';
-
+import { FaqComponent } from './faq/faq.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, CollageImagesComponent, CarouselComponent, BannerComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, CollageImagesComponent, CarouselComponent, BannerComponent, FaqComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
