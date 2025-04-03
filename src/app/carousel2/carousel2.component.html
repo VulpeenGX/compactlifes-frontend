@@ -1,11 +1,11 @@
 <div class="w-full bg-gray-100">
-  <h1 class="text-3xl font-bold lg:text-left pl-13 pt-5 mb-4 text-center">
-    Special Prices
+  <h1 class="text-3xl font-bold lg:text-right pr-15 pt-5 mb-4 text-center">
+    Outlet
   </h1>
 
   <div
     #carousel
-    class="flex space-x-4 overflow-x-auto select-none product-carousel-container"
+    class="flex space-x-4 overflow-x-auto select-none product-carousel-container pb-10"
     (scroll)="onScroll()"
     (mousedown)="onMouseDown($event)"
     (mouseleave)="onMouseLeave()"
@@ -14,8 +14,14 @@
   >
     <div
       *ngFor="let product of displayProducts"
-      class="min-w-[250px] flex-shrink-0 bg-white rounded-lg shadow p-4 flex flex-col items-center product-card"
+      class="min-w-[250px] flex-shrink-0 bg-white rounded-lg shadow p-4 flex flex-col items-center product-card relative"
     >
+      <div
+        class="absolute top-2 left-2 transparent-bg text-white text-xs font-semibold px-2 py-1 rounded"
+      >
+        Express
+      </div>
+
       <img
         [src]="product.imageUrl"
         [alt]="product.title"

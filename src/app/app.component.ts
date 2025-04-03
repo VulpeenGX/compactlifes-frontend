@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 import { CollageImagesComponent } from './collage-images/collage-images.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { Carousel2Component } from './carousel2/carousel2.component';
 import { BannerComponent } from './banner/banner.component';
 import { FaqComponent } from './faq/faq.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, CollageImagesComponent, CarouselComponent, BannerComponent, FaqComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, CollageImagesComponent, CarouselComponent, Carousel2Component, BannerComponent, FaqComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

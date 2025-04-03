@@ -1,10 +1,12 @@
+/* Ocultar scrollbar en navegadores basados en Webkit (Chrome, Safari, Opera) */
 .product-carousel-container::-webkit-scrollbar {
   display: none;
 }
 
+/* Ocultar scrollbar en IE, Edge y Firefox */
 .product-carousel-container {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;  
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .wrap {
@@ -30,3 +32,6 @@
   opacity: 1;
 }
 
+.transparent-bg {
+  background-color: rgba(0, 0, 0, 0.5);
+}

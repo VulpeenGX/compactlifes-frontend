@@ -21,7 +21,6 @@
   opacity: 1;
 }
 
-/* Para pantallas grandes (lg) y superiores */
 @media (min-width: 1024px) {
   #icon-profile {
     display: inline-flex;
@@ -47,30 +46,25 @@
     margin-left: 8px;
   }
 
-  /* Logo con nombre (se muestra solo en pantallas grandes) */
   .flex-shrink-0 img:nth-child(2) {
-    display: block;  /* Muestra el logo con nombre */
+    display: block;  
   }
 
-  /* Mostrar el div rojo solo en pantallas lg y superiores */
   #navbar {
-    display: block;  /* Mostrar el div rojo en pantallas lg */
+    display: block;  
   }
 
-  /* El icono de hamburguesa debe estar oculto en pantallas lg y superiores */
   #icon-hamburger {
-    display: none; /* Ocultar en pantallas lg y superiores */
+    display: none; 
   }
 
-  /* Mostrar el texto "Hey! Iniciar sesión" solo en pantallas xl y superiores */
   @media (min-width: 1280px) {
     #icon-profile span {
-      display: inline-block;  /* Mostrar el texto en pantallas xl y superiores */
+      display: inline-block;  
     }
   }
 }
 
-/* Para pantallas pequeñas (menos de lg) */
 @media (max-width: 1023px) {
   #icon-profile:hover:after {
     opacity: 1;
@@ -80,42 +74,37 @@
     display: none;
   }
 
-  /* El logo con nombre solo se muestra en pantallas grandes */
   .flex-shrink-0 img:nth-child(2) {
     display: none;
   }
 
-  /* Mostrar el icono de hamburguesa en pantallas pequeñas */
   #icon-hamburger {
     display: block;
   }
 }
 
-/* Cuando el div rojo aparece, oculta el icono de hamburguesa y muestra el texto en el perfil */
 #navbar ~ .flex ul #icon-hamburger {
-  display: none; /* Ocultar el icono de hamburguesa cuando el div rojo aparece */
+  display: none; 
 }
 
-/* Mostrar el texto de inicio de sesión en el perfil cuando el div rojo esté visible */
+
 #navbar ~ .flex ul #icon-profile span {
-  display: inline-block;  /* Mostrar cuando el div rojo aparece */
+  display: inline-block;  
 }
 
-/* Ajustes para el div rojo */
 #navbar {
-  display: none; /* Por defecto, el div rojo está oculto */
+  display: none; 
 }
 
-/* Mostrar el div rojo solo en pantallas lg */
 @media (min-width: 1024px) {
   #navbar {
-    display: block;  /* Mostrar el div rojo en pantallas lg y superiores */
+    display: block;  
   }
 }
 
 .image-container {
   width: 100%;
-  padding-top: 100%; /* Mantiene una relación de aspecto 1:1 (cuadrada) */
+  padding-top: 100%; 
   position: relative;
   overflow: hidden;
 }

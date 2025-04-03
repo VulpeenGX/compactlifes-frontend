@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   selector: 'app-footer',
   standalone: true,
@@ -6,15 +6,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
-
-  // Propiedad para manejar los elementos (si necesitas lógica adicional)
+export class FooterComponent{
   paymentMethodsHidden: boolean = false;
 
   constructor() {}
-
-  ngOnInit(): void {
-  }
 
   togglePaymentMethods(): void {
     this.paymentMethodsHidden = !this.paymentMethodsHidden;
