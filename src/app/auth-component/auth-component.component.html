@@ -1,0 +1,116 @@
+<section class="min-h-screen flex flex-col md:flex-row">
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="bg-blue-400 text-white flex flex-col justify-between px-6 pt-6 pb-4 md:w-1/2 md:min-h-screen">
+      <!-- Logo centrado -->
+      <div class="flex justify-center mb-5 md:justify-start">
+        <a href="#">
+          <img src="./assets/images/nombre.svg" alt="Logo" class="w-80" />
+        </a>
+      </div>
+  
+      <!-- Mensaje Bienvenida (centrado en móvil y línea única en md+) -->
+      <div class="flex-grow flex items-center justify-center text-center md:text-left">
+        <p class="font-mono font-bold text-4xl md:text-5xl leading-relaxed">
+          <span class="block">Bienvenido! Welcome! <br> ようこそ!</span>
+        </p>
+      </div>
+  
+      <!-- Footer (centrado en móvil) -->
+      <div class="text-xs mt-4 hidden md:block">
+        <p>
+          CompactLifes.es — Política de cookies y Política de privacidad © CompactLifes Systems
+        </p>
+      </div>
+    </div>
+  
+    <!-- COLUMNA DERECHA -->
+    <div class="bg-white flex flex-col justify-center px-6 py-10 md:w-1/2 md:min-h-screen md:pl-12">
+      <div class="max-w-md w-full mx-auto">
+        <h3 class="text-center text-lg font-bold font-mono mb-6">
+          {{ isRegisterMode ? '¿No tienes cuenta? A que esperas' : 'Estás a un click de unirte a nosotros' }}
+        </h3>
+  
+        <form class="space-y-5 text-gray-700" (submit)="onSubmit($event)">
+          <div *ngIf="isRegisterMode">
+            <label for="name">Nombre</label>
+            <input id="name" type="text" class="w-full border-2 rounded-md px-3 py-2" required />
+          </div>
+        
+          <div *ngIf="isRegisterMode">
+            <label for="address">Dirección</label>
+            <input id="address" type="text" class="w-full border-2 rounded-md px-3 py-2" required />
+          </div>
+        
+          <div *ngIf="isRegisterMode">
+            <label for="phone">Móvil (opcional)</label>
+            <input id="phone" type="tel" class="w-full border-2 rounded-md px-3 py-2" />
+          </div>
+        
+          <div>
+            <label for="email">Correo electrónico</label>
+            <input id="email" type="email" class="w-full border-2 rounded-md px-3 py-2" required />
+          </div>
+        
+          <div>
+            <label for="password">Contraseña</label>
+            <input id="password" type="password" class="w-full border-2 rounded-md px-3 py-2" required />
+          </div>
+        
+          <input
+            type="submit"
+            [value]="isRegisterMode ? 'Registrarse' : 'Iniciar sesión'"
+            class="w-full bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-gray-800 cursor-pointer"
+          />
+        </form>
+        
+        <div class="my-6 text-center text-gray-400 font-semibold">— O —</div>
+        
+        <div class="flex flex-col space-y-3">
+          <!-- Enlace para cambiar entre Login y Registro -->
+          <a
+            *ngIf="!isRegisterMode"
+            (click)="goToRegister()"
+            class="text-sm text-blue-600 hover:underline text-center cursor-pointer"
+          >
+            ¿No tienes una cuenta? ¡Créatela!
+          </a>
+        
+          <a
+            *ngIf="isRegisterMode"
+            (click)="goToLogin()"
+            class="text-sm text-blue-600 hover:underline text-center cursor-pointer"
+          >
+            ¿Ya tienes cuenta?
+          </a>
+        
+          <!-- Segundo Enlace de Registrarse o Iniciar sesión -->
+          <a
+            *ngIf="!isRegisterMode"
+            (click)="goToRegister()"
+            class="text-center w-full border-2 rounded-lg border-black text-black px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          >
+            Registrarse
+          </a>
+        
+          <a
+            *ngIf="isRegisterMode"
+            (click)="goToLogin()"
+            class="text-center w-full border-2 rounded-lg border-black text-black px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          >
+            Iniciar sesión
+          </a>
+          
+          <!-- Botón de Google, solo en Login -->
+          <button
+            *ngIf="!isRegisterMode"  
+            type="button"
+            class="w-full flex items-center justify-center gap-2 border-2 rounded-lg border-black text-black px-4 py-2 hover:bg-gray-100"
+          >
+            <img src="./assets/icons/google.svg" alt="Google" class="w-5 h-5" />
+            Iniciar sesión con Google
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
