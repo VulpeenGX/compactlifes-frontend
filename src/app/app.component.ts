@@ -3,17 +3,24 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
-import { CollageImagesComponent } from './collage-images/collage-images.component';
-import { CarouselComponent } from './carousel/carousel.component';
-import { Carousel2Component } from './carousel2/carousel2.component';
-import { BannerComponent } from './banner/banner.component';
-import { FaqComponent } from './faq/faq.component';
+import { Router, NavigationEnd } from '@angular/router';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, CollageImagesComponent, CarouselComponent, Carousel2Component, BannerComponent, FaqComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Frontend';
+  showLayout = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const hiddenRoutes = ['/login', '/register'];
+        this.showLayout = !hiddenRoutes.includes(event.urlAfterRedirects);
+      }
+    });
+  }
+  
 }
