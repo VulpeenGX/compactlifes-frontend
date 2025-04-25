@@ -1,6 +1,9 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
+import { WishlistService, WishlistItem } from '../services/wishlist.service';
+import { CartService } from '../services/cart.service';
+import { NotificationService } from '../services/notification.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -22,30 +25,24 @@ interface Product {
   styleUrls: ['./carousel2.component.css']
 })
 export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
-  wishlist: { [key: string]: boolean } = {}; 
   private subscriptions: Subscription[] = [];
-  
-  constructor(private router: Router, private apiService: ApiService) {}
-
-  toggleWishlist(productId: number) {
-    const id = productId.toString(); 
-  }
-
-  isInWishlist(productId: number): boolean {
-    return !!this.wishlist[productId.toString()]; 
-  }
-
   products: Product[] = [];
   displayProducts: Product[] = [];
 
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
-
   isDown: boolean = false;
   startX: number = 0;
   scrollLeft: number = 0;
-
   cardWidth: number = 0;
   cloneWidth: number = 0;
+
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private wishlistService: WishlistService,
+    private cartService: CartService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -55,9 +52,8 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(
       this.apiService.getProductsWithoutOffers().subscribe((data: any) => {
         this.products = data;
-        this.displayProducts = this.products; // Mostrar solo los productos recibidos
+        this.displayProducts = this.products;
         
-        // Inicializar el carrusel después de cargar los productos
         setTimeout(() => {
           this.initializeCarousel();
         }, 0);
@@ -65,22 +61,46 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  // Métodos para wishlist
+  toggleWishlist(productId: number) {
+    const product = this.products.find(p => p.id === productId);
+    if (product) {
+      this.wishlistService.toggleWishlistItem(product as WishlistItem);
+      if (this.isInWishlist(productId)) {
+        this.notificationService.showNotification(`${product.nombre} ha sido añadido a la wishlist`, 'wishlist'); // Cambiado a tipo 'wishlist'
+      } else {
+         // Opcional: Notificación al quitar
+         this.notificationService.showNotification(`${product.nombre} ha sido eliminado de la wishlist`, 'info'); // Descomentado y tipo 'info' (o 'deleted' si lo prefieres)
+      }
+    }
+  }
+
+  isInWishlist(productId: number): boolean {
+    return this.wishlistService.isInWishlist(productId);
+  }
+
+  // Método para carrito
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+    this.notificationService.showNotification(`${product.nombre} ha sido añadido al carrito`, 'cart'); // Cambiado a tipo 'cart'
+  }
+
   initializeCarousel() {
     const container = this.carousel?.nativeElement;
-    if (!container) return;
-    
-    const card = container.querySelector('.product-card');
+    if (!container || this.products.length === 0) return;
+
+    const card = container.querySelector('.product-card'); // Asegúrate que la clase coincida
     if (card) {
       this.cardWidth = card.clientWidth;
+      // Ajusta cloneWidth según cómo manejes el bucle infinito en el HTML
       this.cloneWidth = this.cardWidth * this.products.length;
-      container.scrollLeft = this.cloneWidth;
+      // Puede que no necesites establecer scrollLeft aquí si no clonas
+      // container.scrollLeft = this.cloneWidth; // Posición inicial si clonas 3 veces
     }
   }
 
   ngAfterViewInit() {
-    if (this.products.length > 0) {
-      this.initializeCarousel();
-    }
+    // La inicialización se llama después de cargar los productos en loadProducts
   }
 
   onMouseDown(e: MouseEvent) {
@@ -107,8 +127,9 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
 
   onScroll() {
     const container = this.carousel.nativeElement;
-    if (!this.cloneWidth) return;
+    if (!this.cloneWidth || this.products.length === 0) return;
 
+    // Lógica de scroll infinito (ajustar si es necesario)
     if (container.scrollLeft < this.cloneWidth * 0.5) {
       container.scrollLeft += this.cloneWidth;
     } else if (container.scrollLeft >= this.cloneWidth * 1.5) {
@@ -116,15 +137,7 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  addToWishlist(product: Product) {
-    console.log('Agregado a wishlist:', product);
-    //  lógica  de wishlist
-  }
-
-  addToCart(product: Product) {
-    console.log('Agregado al carrito:', product);
-    // lógica  del carrito
-  }
+  // El método addToWishlist fue eliminado porque toggleWishlist ya hace el trabajo.
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

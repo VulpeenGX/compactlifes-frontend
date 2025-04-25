@@ -1,0 +1,99 @@
+<div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8 grid grid-cols-12 gap-3 sm:gap-6">
+    <!-- Sidebar -->
+    <div class="col-span-3" *ngIf="isLoggedIn">
+        <div class="bg-white shadow rounded p-4 sticky top-4">
+            <div class="flex items-center space-x-4 pb-4 border-b">
+                <img [src]="user.profileImage" alt="Perfil" class="w-14 h-14 rounded-full object-cover">
+                <div>
+                    <h2 class="font-medium text-gray-800">Hola, {{ user.name }}</h2>
+                    <p class="text-sm text-gray-600">Bienvenido de nuevo</p>
+                </div>
+            </div>
+            
+            <!-- Menú lateral simplificado para usuarios logueados -->
+            <div class="mt-6 space-y-2">
+                <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
+                    <span class="mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </span>
+                    Mi cuenta
+                </a>
+                <a href="/wishlist" class="flex items-center text-blue-500 font-medium py-2">
+                    <span class="mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </span>
+                    Mi wishlist
+                </a>
+                <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
+                    <span class="mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </span>
+                    Cerrar sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Opciones de login/registro cuando no está logueado -->
+    <div class="col-span-3" *ngIf="!isLoggedIn">
+        <div class="bg-white shadow rounded p-4 sticky top-4">
+            <h2 class="font-medium text-lg text-gray-800 mb-4">Accede a tu cuenta</h2>
+            
+            <div class="mt-6 space-y-3">
+                <button (click)="goToLogin()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition">
+                    Iniciar sesión
+                </button>
+                <button (click)="goToRegister()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded transition">
+                    Registrarse
+                </button>
+                <p class="text-sm text-gray-600 mt-4">
+                    Inicia sesión para guardar tus productos favoritos y acceder a ellos desde cualquier dispositivo.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Wishlist principal centrado -->
+    <div [ngClass]="isLoggedIn ? 'col-span-9' : 'col-span-9'">
+        <div class="space-y-4 w-full mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Mi lista de deseos</h1>
+                <!-- Botón de checkout eliminado de aquí -->
+            </div>
+
+            <!-- Mensaje cuando no hay productos -->
+            <!-- Cambiar esto: -->
+            <div *ngIf="wishlist.length === 0" class="text-center py-12">
+            <!-- Por esto: -->
+            <div *ngIf="wishlistItems.length === 0" class="text-center py-12">
+
+            <!-- Cambiar esto: -->
+            <div *ngIf="wishlist.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <!-- Por esto: -->
+            <div *ngIf="wishlistItems.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+
+            <!-- Cambiar esto: -->
+            <div *ngFor="let product of wishlist" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
+            <!-- Por esto: -->
+            <div *ngFor="let product of wishlistItems" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
+
+            <!-- Cambiar esto: -->
+            <div *ngIf="wishlist.length > 0" class="flex justify-center mt-6">
+            <!-- Por esto: -->
+            <div *ngIf="wishlistItems.length > 0" class="flex justify-center mt-6">
+
+            <div *ngIf="wishlist.length > 0" class="flex justify-center mt-6">
+                <button (click)="goToCheckout()" class="bg-blue-300 hover:bg-green-400 text-white py-2 px-6 rounded transition">
+                    Proceder al checkout
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./wrapper -->

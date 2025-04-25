@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { WishlistService } from '../services/wishlist.service';
+import { CartService } from '../services/cart.service';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 interface Elemento {
   titulo: string;
@@ -16,12 +21,16 @@ interface MenuItem {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   activeTab: string = 'Productos';
+  wishlistCount: number = 0;
+  cartCount: number = 0;
+  isLoggedIn: boolean = false;
+  private subscriptions: Subscription[] = [];
   menuItems: MenuItem[] = [
     {
       nombre: 'Productos',
@@ -65,9 +74,15 @@ export class HeaderComponent {
         { titulo: 'Revende tus muebles', imagen: '', enlace: '#' },
         { titulo: 'Compra por telefono', imagen: '', enlace: '#' },
         { titulo: 'CompactLifes, Innovación en cada rincón', imagen: '', enlace: '#' },
-        ],
+      ],
     }
   ];
+
+  constructor(
+    private wishlistService: WishlistService,
+    private cartService: CartService,
+    private authService: AuthService
+  ) {}
 
   get elementosActivos(): Elemento[] {
     return this.menuItems.find(item => item.nombre === this.activeTab)?.elementos || [];
@@ -96,6 +111,31 @@ export class HeaderComponent {
   
     return grupos;
   }
-  
-  
+
+  ngOnInit() {
+    // Suscribirse a cambios en la wishlist
+    this.subscriptions.push(
+      this.wishlistService.wishlist$.subscribe(wishlist => {
+        this.wishlistCount = wishlist.length;
+      })
+    );
+
+    // Suscribirse a cambios en el carrito
+    this.subscriptions.push(
+      this.cartService.cart$.subscribe(cart => {
+        this.cartCount = this.cartService.getCartItemCount();
+      })
+    );
+
+    // Suscribirse al estado de autenticación
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe(user => {
+        this.isLoggedIn = !!user;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

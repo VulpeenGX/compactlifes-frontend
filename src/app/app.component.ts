@@ -4,10 +4,12 @@ import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 import { Router, NavigationEnd } from '@angular/router';
+import { NotificationComponent } from './notification/notification.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent],
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, NotificationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -22,5 +24,4 @@ export class AppComponent {
       }
     });
   }
-  
 }

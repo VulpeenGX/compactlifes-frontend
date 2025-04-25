@@ -1,0 +1,96 @@
+/* Estilos para los botones de añadir al carrito */
+.add-to-cart-btn {
+  background-color: #93c5fd; /* Azul claro */
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #60a5fa; /* Azul claro más oscuro al pasar el mouse */
+}
+
+/* Estilos para las tarjetas de productos */
+/* Reducir el tamaño de las tarjetas de productos */
+.product-card {
+  width: 120px; /* Reducido de un tamaño mayor */
+  margin: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.product-image {
+  height: 160px; /* Altura reducida */
+  width: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 10px; /* Padding reducido */
+}
+
+.product-name {
+  font-size: 14px; /* Tamaño de fuente reducido */
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 16px; /* Tamaño de fuente reducido */
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 10px; /* Padding reducido */
+}
+
+/* Ajustar el contenedor de productos para la nueva disposición */
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px; /* Espacio reducido entre tarjetas */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Cursor pointer para elementos interactivos */
+button, 
+a, 
+.btn,
+[role="button"],
+.clickable {
+  cursor: pointer !important;
+}
+
+/* Añadir cursor de manita a elementos interactivos */
+.wishlist-item a,
+.wishlist-item button,
+.wishlist-actions button,
+.wishlist-item-remove,
+.wishlist-controls a,
+.wishlist-controls button {
+  cursor: pointer;
+}
+
+/* Si tienes iconos o elementos específicos que necesitan el cursor pointer */
+.wishlist-icon,
+.remove-icon,
+.action-icon {
+  cursor: pointer;
+}
+
+/* Asegurar que todos los elementos clickeables tengan el cursor de mano */
+.remove-button,
+.add-to-cart-button,
+.checkout-button,
+.login-button,
+.register-button {
+  cursor: pointer;
+}

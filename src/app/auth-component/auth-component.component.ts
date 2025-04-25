@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-auth-component',
@@ -13,13 +14,34 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class AuthComponentComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   isRegisterMode = false;
+  authForm!: FormGroup;
+  errorMessage: string = '';
+  loading: boolean = false;
 
   ngOnInit() {
     this.route.url.subscribe(url => {
       this.isRegisterMode = this.router.url.includes('register');
+      this.initForm();
     });
+  }
+
+  initForm() {
+    if (this.isRegisterMode) {
+      this.authForm = this.formBuilder.group({
+        username: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]]
+      });
+    } else {
+      this.authForm = this.formBuilder.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', Validators.required]
+      });
+    }
   }
 
   goToRegister() {
@@ -30,12 +52,12 @@ export class AuthComponentComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  onSubmit(event: Event) {
-    event.preventDefault(); // para que no recargue la página
-    if (this.isRegisterMode) {
-      console.log('Registrando...');
-    } else {
-      console.log('Iniciando sesión...');
-    }
+  onSubmit(event: Event): void {
+    event.preventDefault();
+    // Aquí puedes agregar la lógica para manejar el envío del formulario
+    console.log('Formulario enviado');
   }
+
+
+
 }
