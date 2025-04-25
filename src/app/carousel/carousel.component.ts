@@ -1,14 +1,16 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../services/api.service';
+import { Subscription } from 'rxjs';
 
 interface Product {
   id: number;
-  title: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-  inStock: boolean;
-  discount?: number; 
+  nombre: string;
+  precio: number;
+  descripcion: string;
+  imagen: string;
+  stock: boolean;
+  descuento?: number; 
 }
 
 @Component({
@@ -18,8 +20,9 @@ interface Product {
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
-export class CarouselComponent implements OnInit, AfterViewInit {
+export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   wishlist: { [key: string]: boolean } = {}; 
+  private subscriptions: Subscription[] = [];
 
   toggleWishlist(productId: number) {
     const id = productId.toString(); 
@@ -30,23 +33,9 @@ export class CarouselComponent implements OnInit, AfterViewInit {
     return !!this.wishlist[productId.toString()]; 
   }
 
-
-  products: Product[] = [
-    { id: 1, title: 'Producto 1', price: 29.99, description: 'Descripción del producto 1', imageUrl: './assets/products/product.png', inStock: true, discount: 10 },
-    { id: 2, title: 'Producto 2', price: 49.99, description: 'Descripción del producto 2', imageUrl: './assets/products/product.png', inStock: false },
-    { id: 3, title: 'Producto 3', price: 19.99, description: 'Descripción del producto 3', imageUrl: './assets/products/product.png', inStock: true },
-    { id: 4, title: 'Producto 4', price: 59.99, description: 'Descripción del producto 4', imageUrl: './assets/products/product.png', inStock: true, discount: 15 },
-    { id: 12, title: 'Producto 11', price: 29.99, description: 'Descripción del producto 1', imageUrl: './assets/products/product.png', inStock: true, discount: 10 },
-    { id: 23, title: 'Producto 22', price: 49.99, description: 'Descripción del producto 2', imageUrl: './assets/products/product.png', inStock: false },
-    { id: 34, title: 'Producto 33', price: 19.99, description: 'Descripción del producto 3', imageUrl: './assets/products/product.png', inStock: true },
-    { id: 41, title: 'Producto 44', price: 59.99, description: 'Descripción del producto 4', imageUrl: './assets/products/product.png', inStock: true, discount: 15 },
-    { id: 17, title: 'Producto 15', price: 29.99, description: 'Descripción del producto 1', imageUrl: './assets/products/product.png', inStock: true, discount: 10 },
-    { id: 29, title: 'Producto 26', price: 49.99, description: 'Descripción del producto 2', imageUrl: './assets/products/product.png', inStock: false },
-    { id: 38, title: 'Producto 30', price: 19.99, description: 'Descripción del producto 3', imageUrl: './assets/products/product.png', inStock: true },
-    { id: 40, title: 'Producto 47', price: 59.99, description: 'Descripción del producto 4', imageUrl: './assets/products/product.png', inStock: true, discount: 15 }
-  ];
-
+  products: Product[] = [];
   displayProducts: Product[] = [];
+  
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
   isDown: boolean = false;
   startX: number = 0;
@@ -54,20 +43,31 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   cardWidth: number = 0;
   cloneWidth: number = 0;
 
+  constructor(private apiService: ApiService) {}
+
   ngOnInit() {
-    this.displayProducts = [...this.products, ...this.products, ...this.products];
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.subscriptions.push(
+      this.apiService.getProductsOffers().subscribe((data: any) => {
+        this.products = data;
+        this.displayProducts = this.products;
+      })
+    );
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      const container = this.carousel.nativeElement;
-      const card = container.querySelector('.product-card');
-      if (card) {
-        this.cardWidth = card.clientWidth;
+    if (this.products.length > 0) {
+      // Initialize carousel properties
+      const cards = this.carousel.nativeElement.getElementsByClassName('card');
+      if (cards.length > 0) {
+        this.cardWidth = cards[0].offsetWidth;
         this.cloneWidth = this.cardWidth * this.products.length;
-        container.scrollLeft = this.cloneWidth;
+        this.carousel.nativeElement.scrollLeft = this.cloneWidth;
       }
-    }, 0);
+    }
   }
 
   onMouseDown(e: MouseEvent) {
@@ -111,5 +111,9 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   addToCart(product: Product) {
     console.log('Agregado al carrito:', product);
     // lógica del carrito
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

@@ -23,29 +23,29 @@
       </div>
 
       <img
-        [src]="product.imageUrl"
-        [alt]="product.title"
+        [src]="product.imagen"
+        [alt]="product.nombre"
         class="w-32 h-32 object-cover rounded-full mb-2"
       />
 
       <h2 class="text-lg font-semibold mb-1 text-center">
-        <a href="" class="hover:underline">{{ product.title }}</a>
+        <a href="" class="hover:underline">{{ product.nombre }}</a>
       </h2>
 
-      <p class="text-sm text-gray-500 mb-2 text-center">
-        {{ product.description }}
+      <p class="text-sm text-gray-500 mb-2 text-center h-12 overflow-hidden">
+        {{ (product.descripcion.length > 30) ? (product.descripcion | slice:0:30) + '...' : product.descripcion }}
       </p>
 
       <div class="mb-2">
-        <span class="text-xl font-bold text-black">${{ product.price }}</span>
-        <span *ngIf="product.discount" class="ml-2 text-sm text-red-500">
-          {{ product.discount }}% off
+        <span class="text-xl font-bold text-black">${{ product.precio }}</span>
+        <span *ngIf="product.descuento" class="ml-2 text-sm text-red-500">
+          {{ product.descuento }}% off
         </span>
       </div>
 
       <div class="mb-2">
         <span
-          *ngIf="product.inStock; else outStock"
+          *ngIf="product.stock; else outStock"
           class="text-sm text-gray-900"
           >Disponible</span
         >
