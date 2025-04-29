@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
 import { WishlistService, WishlistItem } from '../services/wishlist.service';
 import { CartService } from '../services/cart.service';
-import { NotificationService } from '../services/notification.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -41,7 +40,6 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     private apiService: ApiService,
     private wishlistService: WishlistService,
     private cartService: CartService,
-    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -66,12 +64,6 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     const product = this.products.find(p => p.id === productId);
     if (product) {
       this.wishlistService.toggleWishlistItem(product as WishlistItem);
-      if (this.isInWishlist(productId)) {
-        this.notificationService.showNotification(`${product.nombre} ha sido añadido a la wishlist`, 'wishlist'); // Cambiado a tipo 'wishlist'
-      } else {
-         // Opcional: Notificación al quitar
-         this.notificationService.showNotification(`${product.nombre} ha sido eliminado de la wishlist`, 'info'); // Descomentado y tipo 'info' (o 'deleted' si lo prefieres)
-      }
     }
   }
 
@@ -82,7 +74,6 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
   // Método para carrito
   addToCart(product: Product) {
     this.cartService.addToCart(product);
-    this.notificationService.showNotification(`${product.nombre} ha sido añadido al carrito`, 'cart'); // Cambiado a tipo 'cart'
   }
 
   initializeCarousel() {

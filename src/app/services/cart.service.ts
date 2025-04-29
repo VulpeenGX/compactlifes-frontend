@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NotificationService } from './notification.service';
 
 export interface CartItem {
   id: number;
@@ -21,8 +22,12 @@ export class CartService {
   private cartKey = 'compactlifes_cart';
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   public cart$ = this.cartSubject.asObservable();
+  public cartItems$ = this.cartSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
     this.loadFromLocalStorage();
   }
 
@@ -57,6 +62,7 @@ export class CartService {
       updatedCart[existingItemIndex].quantity += quantity;
       this.cartSubject.next(updatedCart);
       this.saveToLocalStorage(updatedCart);
+      this.notificationService.showNotification(`Se ha sumado ${product.nombre} a tu carrito`, 'cart');
     } else {
       // Si es un producto nuevo, añadirlo al carrito
       const cartItem: CartItem = {
@@ -66,14 +72,20 @@ export class CartService {
       const newCart = [...currentCart, cartItem];
       this.cartSubject.next(newCart);
       this.saveToLocalStorage(newCart);
+      this.notificationService.showNotification(`${product.nombre} ha sido añadido a tu carrito`, 'cart');
     }
   }
 
   removeFromCart(productId: number): void {
     const currentCart = this.cartSubject.value;
+    const productToRemove = currentCart.find(item => item.id === productId);
     const newCart = currentCart.filter(item => item.id !== productId);
     this.cartSubject.next(newCart);
     this.saveToLocalStorage(newCart);
+    
+    if (productToRemove && productToRemove.nombre) {
+      this.notificationService.showNotification(`${productToRemove.nombre} ha sido eliminado de tu carrito`, 'cart');
+    }
   }
 
   updateQuantity(productId: number, quantity: number): void {
@@ -150,5 +162,6 @@ export class CartService {
   clearCart(): void {
     this.cartSubject.next([]);
     this.saveToLocalStorage([]);
+    this.notificationService.showNotification('Tu carrito ha sido vaciado', 'cart');
   }
 }

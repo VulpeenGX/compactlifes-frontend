@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { WishlistService } from '../services/wishlist.service';
 import { Subscription } from 'rxjs';
+import { CartService } from '../services/cart.service';
 
 interface WishlistProduct {
   id: number;
@@ -22,9 +23,8 @@ interface WishlistProduct {
   styleUrls: ['./wishlist.component.css']
 })
 export class WishlistComponent implements OnInit, OnDestroy {
-  wishlist: WishlistProduct[] = [];
-  wishlistItems: WishlistProduct[] = []; // Añadido para compatibilidad con la plantilla
-  isLoggedIn: boolean = false;
+  wishlistItems: WishlistProduct[] = []; // Usamos solo esta variable para simplificar
+  isLoggedIn: boolean = true; // Cambiado a false para probar ambos estados
   user = {
     name: 'Usuario',
     profileImage: './assets/images/profile.jpg'
@@ -33,16 +33,16 @@ export class WishlistComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private wishlistService: WishlistService,
-    private router: Router
+    public wishlistService: WishlistService, // Cambiado a público para acceso desde la plantilla
+    private router: Router,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
     // Suscribirse a los cambios en la wishlist
     this.subscriptions.push(
       this.wishlistService.wishlist$.subscribe(items => {
-        this.wishlist = items;
-        this.wishlistItems = items; // Sincronizar ambas propiedades
+        this.wishlistItems = items; // Solo actualizamos wishlistItems
       })
     );
   }
@@ -50,6 +50,21 @@ export class WishlistComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Limpiar suscripciones
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  // Método para eliminar un producto de la wishlist
+  removeFromWishlist(productId: number): void {
+    this.wishlistService.removeFromWishlist(productId);
+  }
+
+  // Método para añadir un producto al carrito
+  addToCart(product: WishlistProduct): void {
+    this.cartService.addToCart(product);
+  }
+
+  // Método para navegar a la página principal
+  goToHome(): void {
+    this.router.navigate(['/']);
   }
 
   goToCheckout() {

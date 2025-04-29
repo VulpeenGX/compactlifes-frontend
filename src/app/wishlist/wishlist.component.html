@@ -3,7 +3,6 @@
     <div class="col-span-3" *ngIf="isLoggedIn">
         <div class="bg-white shadow rounded p-4 sticky top-4">
             <div class="flex items-center space-x-4 pb-4 border-b">
-                <img [src]="user.profileImage" alt="Perfil" class="w-14 h-14 rounded-full object-cover">
                 <div>
                     <h2 class="font-medium text-gray-800">Hola, {{ user.name }}</h2>
                     <p class="text-sm text-gray-600">Bienvenido de nuevo</p>
@@ -27,6 +26,12 @@
                         </svg>
                     </span>
                     Mi wishlist
+                </a>
+                <a href="/cart" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
+                    <span class="mr-3">
+                        <img src="./assets/icons/shoppingBag.svg" alt="carrtio" class="h-5 w-5">
+                    </span>
+                    Mi carrito
                 </a>
                 <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
                     <span class="mr-3">
@@ -68,30 +73,36 @@
             </div>
 
             <!-- Mensaje cuando no hay productos -->
-            <!-- Cambiar esto: -->
-            <div *ngIf="wishlist.length === 0" class="text-center py-12">
-            <!-- Por esto: -->
             <div *ngIf="wishlistItems.length === 0" class="text-center py-12">
-
-            <!-- Cambiar esto: -->
-            <div *ngIf="wishlist.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            <!-- Por esto: -->
-            <div *ngIf="wishlistItems.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-
-            <!-- Cambiar esto: -->
-            <div *ngFor="let product of wishlist" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-            <!-- Por esto: -->
-            <div *ngFor="let product of wishlistItems" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-
-            <!-- Cambiar esto: -->
-            <div *ngIf="wishlist.length > 0" class="flex justify-center mt-6">
-            <!-- Por esto: -->
-            <div *ngIf="wishlistItems.length > 0" class="flex justify-center mt-6">
-
-            <div *ngIf="wishlist.length > 0" class="flex justify-center mt-6">
-                <button (click)="goToCheckout()" class="bg-blue-300 hover:bg-green-400 text-white py-2 px-6 rounded transition">
-                    Proceder al checkout
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <h2 class="mt-4 text-lg font-medium text-gray-900">Tu lista de deseos está vacía</h2>
+                <p class="mt-2 text-gray-500">Explora nuestros productos y añade tus favoritos a la lista de deseos.</p>
+                <button (click)="goToHome()" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded transition">
+                    Explorar productos
                 </button>
+            </div>
+
+            <!-- Grid de productos cuando hay items -->
+            <div *ngIf="wishlistItems.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div *ngFor="let product of wishlistItems" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img [src]="product.imagen" [alt]="product.nombre" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-medium text-gray-900">{{ product.nombre }}</h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="text-lg font-bold text-gray-900">{{ product.precio | currency:'EUR' }}</p>
+                            <button class="text-red-500 hover:text-red-700" (click)="removeFromWishlist(product.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button (click)="addToCart(product)" class="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm transition">
+                            Añadir al carrito
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

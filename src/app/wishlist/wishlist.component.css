@@ -94,3 +94,12 @@ a,
 .register-button {
   cursor: pointer;
 }
+
+img {
+  transition: filter 0.3s ease;
+  filter: invert(0); /* Color original */
+}
+
+a:hover img {
+  filter: invert(32%) sepia(96%) saturate(2445%) hue-rotate(207deg) brightness(99%) contrast(105%);
+}

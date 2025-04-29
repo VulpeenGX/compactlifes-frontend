@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.notifications.push(notification);
       setTimeout(() => {
         this.removeNotification(notification);
-      }, 3000);
+      }, 5000);
     });
   }
 

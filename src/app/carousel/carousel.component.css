@@ -1,10 +1,15 @@
-.product-carousel-container::-webkit-scrollbar {
-  display: none;
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .product-carousel-container {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;  
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.product-carousel-container::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari y Opera */
 }
 
 .wrap {

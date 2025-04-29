@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NotificationService } from './notification.service';
 
 export interface WishlistItem {
   id: number;
@@ -21,7 +22,10 @@ export class WishlistService {
   private wishlistSubject = new BehaviorSubject<WishlistItem[]>([]);
   public wishlist$ = this.wishlistSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
     this.loadFromLocalStorage();
   }
 
@@ -52,14 +56,20 @@ export class WishlistService {
       const newWishlist = [...currentWishlist, product];
       this.wishlistSubject.next(newWishlist);
       this.saveToLocalStorage(newWishlist);
+      this.notificationService.showNotification(`${product.nombre} ha sido añadido a tu lista de deseos`, 'wishlist');
     }
   }
 
   removeFromWishlist(productId: number): void {
     const currentWishlist = this.wishlistSubject.value;
+    const productToRemove = currentWishlist.find(item => item.id === productId);
     const newWishlist = currentWishlist.filter(item => item.id !== productId);
     this.wishlistSubject.next(newWishlist);
     this.saveToLocalStorage(newWishlist);
+    
+    if (productToRemove && productToRemove.nombre) {
+      this.notificationService.showNotification(`${productToRemove.nombre} ha sido eliminado de tu lista de deseos`, 'wishlist');
+    }
   }
 
   toggleWishlistItem(product: WishlistItem): void {
@@ -109,5 +119,6 @@ export class WishlistService {
   clearWishlist(): void {
     this.wishlistSubject.next([]);
     this.saveToLocalStorage([]);
+    this.notificationService.showNotification('Tu lista de deseos ha sido vaciada', 'wishlist');
   }
 }

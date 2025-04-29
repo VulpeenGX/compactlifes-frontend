@@ -1,12 +1,15 @@
-/* Ocultar scrollbar en navegadores basados en Webkit (Chrome, Safari, Opera) */
-.product-carousel-container::-webkit-scrollbar {
-  display: none;
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Ocultar scrollbar en IE, Edge y Firefox */
 .product-carousel-container {
-  -ms-overflow-style: none; /* IE y Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.product-carousel-container::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari y Opera */
 }
 
 .wrap {
