@@ -70,7 +70,7 @@
       <div class="container mx-auto px-4">
         <ul class="flex space-x-8 py-4">
           <li *ngFor="let item of menuItems" class="relative">
-            <a href="#" (click)="selectTab(item.nombre)" class="flex items-center text-gray-800 font-medium" [ngClass]="{'border-b-2 border-blue-500': activeTab === item.nombre}">
+            <a (click)="selectTab(item.nombre); $event.preventDefault()" class="flex items-center text-gray-800 font-medium cursor-pointer" [ngClass]="{'border-b-2 border-blue-500': activeTab === item.nombre}">
               <img [src]="item.icono" [alt]="item.nombre + ' Icono'" class="w-5 h-5 mr-2">
               {{ item.nombre }}
             </a>
