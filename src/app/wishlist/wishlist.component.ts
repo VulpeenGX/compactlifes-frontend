@@ -78,4 +78,20 @@ export class WishlistComponent implements OnInit, OnDestroy {
   goToRegister() {
     this.router.navigate(['/register']);
   }
+
+  // Método para calcular el precio con descuento
+  getPrecioConDescuento(product: WishlistProduct): number {
+    if (!product.descuento || product.descuento <= 0) {
+      return product.precio || 0;
+    }
+    return (product.precio || 0) - ((product.precio || 0) * (product.descuento || 0)) / 100;
+  }
+  
+  // Método para calcular el ahorro
+  getAhorro(product: WishlistProduct): number {
+    if (!product.descuento || product.descuento <= 0) {
+      return 0;
+    }
+    return ((product.precio || 0) * (product.descuento || 0)) / 100;
+  }
 }

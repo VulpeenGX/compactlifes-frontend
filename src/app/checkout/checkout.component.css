@@ -1,0 +1,115 @@
+/* Estilos para el checkout */
+.text-primary {
+  color: #3b82f6 !important;
+}
+
+.focus\:border-primary:focus {
+  border-color: #3b82f6 !important;
+}
+
+/* Animación para el botón de realizar pedido */
+button[disabled] {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+}
+
+/* Estilos para los campos de formulario con error */
+input.ng-invalid.ng-touched, 
+input.ng-invalid.ng-dirty {
+  border-color: #ef4444;
+}
+
+/* Estilos para los mensajes de error */
+.text-red-500 {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Estilos para el indicador de carga */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Estilos para el resumen del pedido */
+.product-summary {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.product-summary::-webkit-scrollbar {
+  width: 6px;
+}
+
+.product-summary::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.product-summary::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.product-summary::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Estilos para el botón de volver al carrito */
+.back-button {
+  display: flex;
+  align-items: center;
+  color: #3b82f6;
+  transition: color 0.3s;
+}
+
+.back-button:hover {
+  color: #2563eb;
+}
+
+/* Estilos para destacar el ahorro */
+.savings {
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Estilos para los badges de descuento */
+.discount-badge {
+  background-color: #fee2e2;
+  color: #ef4444;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Estilos para campos con validación */
+.field-valid {
+  border-color: #10b981 !important;
+}
+
+/* Estilos para el botón habilitado */
+.btn-enabled {
+  background-color: #3b82f6;
+  transition: background-color 0.3s;
+}
+
+.btn-enabled:hover {
+  background-color: #2563eb;
+}
+
+/* Estilos para el botón deshabilitado */
+.btn-disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}

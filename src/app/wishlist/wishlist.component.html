@@ -91,7 +91,18 @@
                     <div class="p-4">
                         <h3 class="font-medium text-gray-900">{{ product.nombre }}</h3>
                         <div class="flex justify-between items-center mt-2">
-                            <p class="text-lg font-bold text-gray-900">{{ product.precio | currency:'EUR' }}</p>
+                            <!-- Mostrar precio con descuento -->
+                            <div>
+                                <p *ngIf="product.descuento" class="text-lg font-bold text-gray-900">
+                                    {{ getPrecioConDescuento(product) | currency:'EUR' }}
+                                    <span class="text-sm text-gray-500 line-through ml-1">{{ product.precio | currency:'EUR' }}</span>
+                                </p>
+                                <p *ngIf="!product.descuento" class="text-lg font-bold text-gray-900">{{ product.precio | currency:'EUR' }}</p>
+                                <!-- Badge de descuento -->
+                                <span *ngIf="product.descuento" class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">
+                                    -{{ product.descuento }}%
+                                </span>
+                            </div>
                             <button class="text-red-500 hover:text-red-700" (click)="removeFromWishlist(product.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

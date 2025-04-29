@@ -182,13 +182,20 @@
                 </span>
               </p>
               <div class="flex justify-between items-center mt-2">
-                <p class="text-lg font-bold text-gray-900">
-                  {{
-                    (item?.precio || 0) -
-                      ((item?.precio || 0) * (item?.descuento || 0)) / 100
-                      | currency : "EUR"
-                  }}
-                </p>
+                <!-- Precio con descuento -->
+                <div>
+                  <p *ngIf="item.descuento" class="text-lg font-bold text-gray-900">
+                    {{ getPrecioConDescuento(item) | currency : "EUR" }}
+                    <span class="text-sm text-gray-500 line-through ml-1">{{ item.precio | currency : "EUR" }}</span>
+                  </p>
+                  <p *ngIf="!item.descuento" class="text-lg font-bold text-gray-900">
+                    {{ item.precio | currency : "EUR" }}
+                  </p>
+                  <!-- Badge de descuento -->
+                  <span *ngIf="item.descuento" class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">
+                    -{{ item.descuento }}%
+                  </span>
+                </div>
                 <div class="flex items-center">
                   <button
                     (click)="decreaseQuantity(item)"
@@ -272,6 +279,11 @@
         <div class="flex justify-between mb-2">
           <span class="text-gray-600">Subtotal</span>
           <span class="font-medium">{{ getTotal() | currency : "EUR" }}</span>
+        </div>
+        <!-- Mostrar ahorro total -->
+        <div *ngIf="getTotalAhorro() > 0" class="flex justify-between mb-2 text-green-600">
+          <span>Ahorro total</span>
+          <span class="font-medium">{{ getTotalAhorro() | currency : "EUR" }}</span>
         </div>
         <div class="flex justify-between mb-2">
           <span class="text-gray-600">Envío</span>

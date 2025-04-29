@@ -94,6 +94,24 @@ export class CartComponent implements OnInit {
   getFinalTotal(): number {
     return this.getTotal() + this.getShippingCost();
   }
+
+  getPrecioConDescuento(item: CartItem): number {
+    if (!item.descuento || item.descuento <= 0) {
+      return item.precio || 0;
+    }
+    return (item.precio || 0) - ((item.precio || 0) * (item.descuento || 0)) / 100;
+  }
+
+  getItemTotal(item: CartItem): number {
+    return this.getPrecioConDescuento(item) * item.quantity;
+  }
+
+  getTotalAhorro(): number {
+    return this.cartItems.reduce((total, item) => {
+      const descuento = ((item.precio || 0) * (item.descuento || 0)) / 100;
+      return total + (descuento * item.quantity);
+    }, 0);
+  }
 }
 
 
