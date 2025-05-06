@@ -79,6 +79,10 @@ export class WishlistComponent implements OnInit, OnDestroy {
     this.router.navigate(['/register']);
   }
 
+  goToProducts() {
+    this.router.navigate(['/productos']);
+  }
+
   // Método para calcular el precio con descuento
   getPrecioConDescuento(product: WishlistProduct): number {
     if (!product.descuento || product.descuento <= 0) {

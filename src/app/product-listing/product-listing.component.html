@@ -1,0 +1,198 @@
+<div class="product-listing-container">
+  <!-- Barra superior con búsqueda y ordenamiento -->
+  <div class="top-bar">
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()" 
+        placeholder="Buscar productos..." 
+        class="search-input"
+      >
+      <button class="search-button">
+        <img src="./assets/icons/search.svg" alt="Buscar">
+      </button>
+    </div>
+    
+    <div class="sort-container">
+      <label for="sort-select">Ordenar por:</label>
+      <select id="sort-select" [(ngModel)]="sortOption" (change)="onSortChange()" class="sort-select">
+        <option value="default">Relevancia</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="name-asc">Nombre: A-Z</option>
+        <option value="name-desc">Nombre: Z-A</option>
+        <option value="discount">Mayor descuento</option>
+      </select>
+    </div>
+    
+    <button class="filter-toggle-btn" (click)="toggleFiltersVisibility()">
+      <img src="./assets/icons/filter.svg" class="to-blue-800" alt="Filtros">
+      <span>Filtros</span>
+    </button>
+  </div>
+  
+  <div class="main-content">
+    <!-- Filtros laterales -->
+    <aside class="filters-sidebar" [class.show]="showFilters">
+      <div class="filters-header">
+        <h2>Filtros</h2>
+        <button class="close-filters" (click)="toggleFiltersVisibility()">×</button>
+      </div>
+      
+      <div class="filter-section">
+        <h3>Categorías</h3>
+        <div class="category-list-container">
+          <div class="category-list">
+            <div *ngFor="let category of availableCategories" class="category-item">
+              <label>
+                <input 
+                  type="checkbox" 
+                  [checked]="selectedCategories.includes(category.id)"
+                  (change)="toggleCategoryFilter(category.id)"
+                >
+                {{ category.nombre }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3>Precio</h3>
+        <div class="price-range">
+          <div class="price-slider">
+            <div class="slider-container">
+              <input 
+                type="range" 
+                id="min-price-slider" 
+                [min]="minPossiblePrice" 
+                [max]="maxPossiblePrice" 
+                [(ngModel)]="priceRange.min" 
+                (input)="applyFilters()"
+                class="price-range-slider min-slider"
+              >
+              <input 
+                type="range" 
+                id="max-price-slider" 
+                [min]="minPossiblePrice" 
+                [max]="maxPossiblePrice" 
+                [(ngModel)]="priceRange.max" 
+                (input)="applyFilters()"
+                class="price-range-slider max-slider"
+              >
+              <div class="slider-track"></div>
+            </div>
+          </div>
+          <div class="price-values">
+            <span>{{ priceRange.min | currency:'EUR' }}</span>
+            <span>{{ priceRange.max | currency:'EUR' }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3>Disponibilidad</h3>
+        <div class="availability-options">
+          <label>
+            <input 
+              type="checkbox" 
+              [(ngModel)]="showOnlyInStock" 
+              (change)="applyFilters()"
+            >
+            Solo productos en stock
+          </label>
+        </div>
+      </div>
+      
+      <div class="filter-section">
+        <h3>Ofertas</h3>
+        <div class="discount-options">
+          <label>
+            <input 
+              type="checkbox" 
+              [(ngModel)]="showOnlyDiscounted" 
+              (change)="applyFilters()"
+            >
+            Solo productos con descuento
+          </label>
+        </div>
+      </div>
+      
+      <button class="reset-filters-btn" (click)="resetFilters()">
+        Restablecer filtros
+      </button>
+    </aside>
+    
+    <!-- Listado de productos -->
+    <div class="products-grid">
+      <div *ngIf="filteredProducts.length === 0" class="no-products">
+        <p>No se encontraron productos que coincidan con los filtros seleccionados.</p>
+        <button (click)="resetFilters()">Restablecer filtros</button>
+      </div>
+      
+      <div *ngFor="let product of filteredProducts" class="product-card">
+        <div class="product-image">
+          <img [src]="product.imagen" [alt]="product.nombre">
+          
+          <div *ngIf="product.descuento && product.descuento > 0" class="discount-badge">
+            -{{ product.descuento }}%
+          </div>
+        </div>
+        
+        <div class="product-info">
+          <h3 class="product-name">{{ product.nombre }}</h3>
+          
+          <div class="product-meta">
+            <div class="product-category" *ngIf="product.categoria">
+              <span class="category-badge">{{ getCategoryName(product.categoria) }}</span>
+            </div>
+            
+            <div class="stock-status">
+              <span class="in-stock" *ngIf="product.stock">En stock</span>
+              <span class="out-of-stock" *ngIf="!product.stock">Agotado</span>
+            </div>
+          </div>
+          
+          <div class="product-price">
+            <span *ngIf="product.descuento && product.descuento > 0" class="original-price">
+              {{ product.precio | currency:'EUR' }}
+            </span>
+            <span class="current-price">
+              {{ getPrecioConDescuento(product) | currency:'EUR' }}
+            </span>
+          </div>
+          
+          <p class="product-description">{{ product.descripcion }}</p>
+          
+          <div class="product-actions">
+            <button 
+              class="add-to-cart-btn" 
+              [disabled]="!product.stock"
+              (click)="addToCart(product)"
+            >
+              <img src="./assets/icons/shoppingBag.svg" alt="Carrito">
+              <span *ngIf="product.stock">Añadir al carrito</span>
+              <span *ngIf="!product.stock">Agotado</span>
+            </button>
+            
+            <button 
+              class="wishlist-btn-new" 
+              [class.active]="isInWishlist(product.id)" 
+              (click)="toggleWishlist(product)"
+            >
+              <img 
+                [src]="
+                  isInWishlist(product.id)
+                    ? './assets/icons/wishlist-filled.svg'
+                    : './assets/icons/wishlist.svg'
+                " 
+                alt="Favorito"
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

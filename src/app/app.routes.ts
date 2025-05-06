@@ -4,7 +4,8 @@ import { AuthComponentComponent } from './auth-component/auth-component.componen
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-
+import { ProductListingComponent } from './product-listing/product-listing.component';
+import { AccountComponent } from './account/account.component';
 export const routes: Routes = [
     {path: '', component: HomeViewComponentComponent},
     {path: 'login', component: AuthComponentComponent},
@@ -12,7 +13,8 @@ export const routes: Routes = [
     {path: 'wishlist', component: WishlistComponent},
     {path: 'cart', component: CartComponent},
     {path: 'checkout', component: CheckoutComponent},
-
+    {path: 'productos', component: ProductListingComponent},
+    {path: 'account', component: AccountComponent},
 ];
 
 

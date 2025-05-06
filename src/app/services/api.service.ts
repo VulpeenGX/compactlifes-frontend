@@ -25,4 +25,20 @@ export class ApiService {
     const endpointUrl: string = this.apiUrl + 'productos/sin-ofertas/';
     return this.http.get(endpointUrl);
   }
+  
+  // Nuevos métodos para categorías
+  getCategorias() {
+    const endpointUrl: string = this.apiUrl + 'categorias/';
+    return this.http.get(endpointUrl);
+  }
+  
+  getCategoriasConProductos() {
+    const endpointUrl: string = this.apiUrl + 'categorias/con_productos/';
+    return this.http.get(endpointUrl);
+  }
+  
+  getProductosPorCategoria(categoriaId: number) {
+    const endpointUrl: string = this.apiUrl + `categorias/${categoriaId}/productos/`;
+    return this.http.get(endpointUrl);
+  }
 }

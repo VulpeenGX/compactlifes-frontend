@@ -83,6 +83,10 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goToProducts(): void {
+    this.router.navigate(['/productos']);
+  }
+
   goToRegister(): void {
     this.router.navigate(['/register']);
   }

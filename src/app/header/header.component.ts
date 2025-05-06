@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       nombre: 'Productos',
       icono: './assets/icons/orders.svg',
       elementos: [
-        { titulo: 'Novedades', imagen: './assets/images/novedades.png', enlace: '#' },
+        { titulo: 'Novedades', imagen: './assets/images/novedades.png', enlace: 'productos' },
         { titulo: 'Almacenamiento', imagen: './assets/images/estante.png', enlace: '#' },
         { titulo: 'Mobiliario multifuncional', imagen: './assets/images/mob-funcional.png', enlace: '#' },
         { titulo: 'Cocinas optimizadas', imagen: './assets/images/ollas.png', enlace: '#' },
