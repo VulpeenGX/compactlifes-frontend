@@ -41,4 +41,9 @@ export class ApiService {
     const endpointUrl: string = this.apiUrl + `categorias/${categoriaId}/productos/`;
     return this.http.get(endpointUrl);
   }
+
+  getEstancias() {
+    const endpointUrl: string = this.apiUrl + 'estancias/';
+    return this.http.get(endpointUrl);
+  }
 }

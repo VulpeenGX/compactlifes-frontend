@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService, CartItem } from '../services/cart.service';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 interface User {
   name: string;
@@ -18,7 +20,7 @@ interface User {
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
   cartItems: CartItem[] = [];
   isLoggedIn: boolean = false;
   formSubmitted: boolean = false;
@@ -41,10 +43,10 @@ export class CheckoutComponent implements OnInit {
   };
   
   user: User = {
-    name: 'Usuario de Prueba',
-    email: 'usuario@ejemplo.com',
-    address: 'Calle Ejemplo 123',
-    phone: '123456789'
+    name: '',
+    email: '',
+    address: '',
+    phone: ''
   };
   
   // Datos del formulario
@@ -76,32 +78,52 @@ export class CheckoutComponent implements OnInit {
   };
   
   paymentMethod: string = 'card';
+  
+  private subscriptions: Subscription[] = [];
+
+
+  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(items => {
-      this.cartItems = items;
-      
-      // Si el carrito está vacío, redirigir al carrito
-      if (items.length === 0) {
-        this.router.navigate(['/cart']);
-      }
-    });
+    this.subscriptions.push(
+      this.cartService.cart$.subscribe(items => {
+        this.cartItems = items;
+        
+        // Si el carrito está vacío, redirigir al carrito
+        if (items.length === 0) {
+          this.router.navigate(['/cart']);
+        }
+      })
+    );
     
-    // Simulamos que el usuario está logueado para pruebas
-    this.isLoggedIn = true;
-    
-    // Si el usuario está logueado, prellenamos los datos
-    if (this.isLoggedIn) {
-      this.shippingInfo.name = this.user.name;
-      this.shippingInfo.email = this.user.email;
-      this.shippingInfo.address = this.user.address;
-      this.shippingInfo.phone = this.user.phone;
-    }
+    // Suscribirse al estado de autenticación
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe(user => {
+        this.isLoggedIn = !!user;
+        if (user) {
+          // Actualizar los datos del usuario
+          this.user.name = user.nombre;
+          this.user.email = user.email;
+          this.user.address = user.direccion;
+          this.user.phone = user.telefono;
+          
+          // Prellenar el formulario con los datos del usuario
+          this.shippingInfo.name = user.nombre + ' ' + user.apellido;
+          this.shippingInfo.email = user.email;
+          this.shippingInfo.address = user.direccion;
+          this.shippingInfo.phone = user.telefono;
+        }
+      })
+    );
   }
 
   getTotal(): number {

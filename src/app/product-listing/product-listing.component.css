@@ -772,3 +772,748 @@
   color: #e74c3c;
   font-weight: 500;
 }
+
+/* Estilos para el acordeón de filtros */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 0;
+  margin-bottom: 10px;
+}
+
+.filter-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.toggle-icon {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+.filter-option {
+  margin-bottom: 10px;
+}
+
+/* Ajustar altura máxima de las listas de categorías y estancias */
+.category-list-container {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  padding-right: 5px;
+  margin-bottom: 15px;
+}
+
+/* Hacer más compactos los elementos de la lista */
+.category-item {
+  padding: 5px 0;
+}
+
+.category-item label {
+  font-size: 14px;
+}
+
+/* Ajustar espaciado entre secciones de filtro */
+.filter-section {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 15px;
+}
+
+.filter-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.category-list-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  padding-right: 5px;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.category-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Personalización de la barra de desplazamiento */
+.category-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.category-list-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.category-list-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.category-list-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Resto de estilos */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Estilos para el slider de rango de precios */
+.price-range {
+  margin-top: 15px;
+}
+
+.price-slider {
+  position: relative;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.slider-container {
+  position: relative;
+  height: 5px;
+  margin: 0 10px;
+}
+
+.slider-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.price-range-slider {
+  position: absolute;
+  top: -7.5px;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  z-index: 3;
+  height: 20px;
+}
+
+/* Modificación de los botones de acción */
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-to-cart-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #3a7bc8;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.add-to-cart-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Nuevo botón de wishlist */
+.wishlist-btn-new {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.wishlist-btn-new:hover {
+  background-color: #f5f5f5;
+}
+
+.wishlist-btn-new.active {
+  background-color: transparent;
+}
+
+.wishlist-btn-new img {
+  width: 20px;
+  height: 20px;
+  transition: filter 0.3s ease;
+}
+
+.wishlist-btn-new.active img {
+  filter: brightness(0);
+}
+
+/* Eliminar el botón de wishlist anterior */
+.wishlist-btn {
+  display: none;
+}
+
+/* Modificación del slider de precio */
+.price-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a90e2;
+  cursor: pointer;
+  pointer-events: auto;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.price-range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a90e2;
+  cursor: pointer;
+  pointer-events: auto;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.price-range-slider:focus {
+  outline: none;
+}
+
+.price-values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Eliminar los inputs numéricos */
+.price-inputs {
+  display: none;
+}
+
+/* Modificación del botón de wishlist */
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.2s;
+  box-shadow: none;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+}
+
+.wishlist-btn.active {
+  background-color: transparent;
+}
+
+.wishlist-btn img {
+  width: 20px;
+  height: 20px;
+  transition: filter 0.3s ease;
+}
+
+.wishlist-btn.active img {
+  filter: brightness(0);
+}
+
+/* Eliminar estilos conflictivos */
+.wrap:after {
+  display: none;
+}
+
+/* Eliminar estos estilos duplicados que están causando problemas */
+.wishlist-btn.active {
+  background-color: transparent;
+}
+
+.wishlist-btn.active img {
+  filter: brightness(0);
+}
+
+.price-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.price-input {
+  flex: 1;
+}
+
+.price-input label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.price-input input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.availability-options,
+.discount-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reset-filters-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.reset-filters-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Grid de productos */
+.products-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.no-products button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Tarjeta de producto */
+.product-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+/* Estilos para el botón de wishlist (copiados del carousel) */
+.wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.wrap:after {
+  content: "";
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: -0px;
+  left: -0px;
+  bottom: -0px;
+  right: -0px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.wrap:hover:after {
+  opacity: 1;
+}
+
+.w-6 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Nueva clase para la fila de categoría y stock */
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.product-category {
+  flex-shrink: 0;
+}
+
+.stock-status {
+  text-align: right;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-name {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.original-price {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.current-price {
+  color: #333;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.product-description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #3a7bc8;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.add-to-cart-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .filters-sidebar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+  
+  .filters-sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .close-filters {
+    display: block;
+  }
+  
+  .filter-toggle-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-container {
+    max-width: 100%;
+  }
+  
+  .sort-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .filters-sidebar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filters-sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .close-filters {
+    display: block;
+  }
+  
+  .filter-toggle-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.product-category {
+  margin-bottom: 8px;
+}
+
+.category-badge {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.stock-status {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.in-stock {
+  color: #2ecc71;
+  font-weight: 500;
+}
+
+.out-of-stock {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+/* Añadir estos estilos al archivo CSS existente */
+
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.category-badge, .estancia-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.category-badge {
+  background-color: #e5f2ff;
+  color: #0066cc;
+}
+
+.estancia-badge {
+  background-color: #f0f4e8;
+  color: #4d7c0f;
+}
+
+.applied-filter {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.filter-badge {
+  background-color: #e5f2ff;
+  color: #0066cc;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+}
+
+.clear-filter {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.clear-filter:hover {
+  background-color: #e5e7eb;
+}

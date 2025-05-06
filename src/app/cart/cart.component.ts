@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService, CartItem } from '../services/cart.service';
 import { NotificationService } from '../services/notification.service';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 interface User {
   name: string;
@@ -19,30 +21,49 @@ interface User {
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItem[] = [];
   isLoggedIn: boolean = false;
   user: User = {
-    name: 'Usuario de Prueba',
-    email: 'usuario@ejemplo.com',
-    address: 'Calle Ejemplo 123',
-    phone: '123456789',
+    name: '',
+    email: '',
+    address: '',
+    phone: '',
     profileImage: './assets/icons/profile.svg'
   };
+  
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private cartService: CartService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(items => {
-      this.cartItems = items;
-    });
+    this.subscriptions.push(
+      this.cartService.cart$.subscribe(items => {
+        this.cartItems = items;
+      })
+    );
     
-    // Simulamos que el usuario está logueado para pruebas
-    this.isLoggedIn = true;
+    // Suscribirse al estado de autenticación
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe(user => {
+        this.isLoggedIn = !!user;
+        if (user) {
+          this.user.name = user.nombre;
+          this.user.email = user.email;
+          this.user.address = user.direccion;
+          this.user.phone = user.telefono;
+        }
+      })
+    );
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   removeFromCart(item: CartItem): void {
@@ -66,6 +87,33 @@ export class CartComponent implements OnInit {
   getTotal(): number {
     return this.cartService.getCartTotal();
   }
+  
+  // Métodos faltantes que se utilizan en la plantilla
+  getShippingCost(): number {
+    return this.getTotal() < 300 ? 4.99 : 0;
+  }
+  
+  getFinalTotal(): number {
+    return this.getTotal() * 1.21 + this.getShippingCost();
+  }
+  
+  getPrecioConDescuento(item: CartItem): number {
+    if (!item.descuento || item.descuento <= 0) {
+      return item.precio || 0;
+    }
+    return (item.precio || 0) - ((item.precio || 0) * (item.descuento || 0)) / 100;
+  }
+  
+  getTotalAhorro(): number {
+    return this.cartItems.reduce((total, item) => {
+      const descuento = ((item.precio || 0) * (item.descuento || 0)) / 100;
+      return total + (descuento * item.quantity);
+    }, 0);
+  }
+  
+  goToProducts(): void {
+    this.router.navigate(['/product-listing']);
+  }
 
   goToCheckout(): void {
     this.router.navigate(['/checkout']);
@@ -83,38 +131,8 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  goToProducts(): void {
-    this.router.navigate(['/productos']);
-  }
-
   goToRegister(): void {
     this.router.navigate(['/register']);
-  }
-
-  getShippingCost(): number {
-    return this.getTotal() < 300 ? 4.99 : 0;
-  }
-  
-  getFinalTotal(): number {
-    return this.getTotal() + this.getShippingCost();
-  }
-
-  getPrecioConDescuento(item: CartItem): number {
-    if (!item.descuento || item.descuento <= 0) {
-      return item.precio || 0;
-    }
-    return (item.precio || 0) - ((item.precio || 0) * (item.descuento || 0)) / 100;
-  }
-
-  getItemTotal(item: CartItem): number {
-    return this.getPrecioConDescuento(item) * item.quantity;
-  }
-
-  getTotalAhorro(): number {
-    return this.cartItems.reduce((total, item) => {
-      const descuento = ((item.precio || 0) * (item.descuento || 0)) / 100;
-      return total + (descuento * item.quantity);
-    }, 0);
   }
 }
 

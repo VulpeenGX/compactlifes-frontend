@@ -13,7 +13,7 @@ export const routes: Routes = [
     {path: 'wishlist', component: WishlistComponent},
     {path: 'cart', component: CartComponent},
     {path: 'checkout', component: CheckoutComponent},
-    {path: 'productos', component: ProductListingComponent},
+    {path: 'product-listing', component: ProductListingComponent},
     {path: 'account', component: AccountComponent},
 ];
 

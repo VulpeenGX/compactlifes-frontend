@@ -1,0 +1,35 @@
+/* Estilos para el componente de cuenta */
+.container {
+  min-height: calc(100vh - 200px);
+}
+
+/* Estilos para los inputs */
+input:focus, select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Estilos para el botón de guardar */
+button[type="submit"] {
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el menú lateral */
+.sticky {
+  position: sticky;
+  top: 1rem;
+}
+
+/* Animación para los enlaces del menú */
+a.transition {
+  transition: all 0.3s ease;
+}
+
+a.transition:hover {
+  padding-left: 0.5rem;
+}

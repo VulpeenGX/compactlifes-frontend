@@ -30,37 +30,80 @@
           {{ isRegisterMode ? '¿No tienes cuenta? A que esperas' : 'Estás a un click de unirte a nosotros' }}
         </h3>
   
-        <form class="space-y-5 text-gray-700" (submit)="onSubmit($event)">
+        <form [formGroup]="authForm" class="space-y-5 text-gray-700" (ngSubmit)="onSubmit()">
+          <!-- Campos para registro -->
           <div *ngIf="isRegisterMode">
-            <label for="name">Nombre</label>
-            <input id="name" type="text" class="w-full border-2 rounded-md px-3 py-2" required />
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" formControlName="nombre" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('nombre')?.invalid && authForm.get('nombre')?.touched" class="text-red-500 text-sm mt-1">
+              Nombre es requerido
+            </div>
+          </div>
+          
+          <div *ngIf="isRegisterMode">
+            <label for="apellido">Apellido</label>
+            <input id="apellido" type="text" formControlName="apellido" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('apellido')?.invalid && authForm.get('apellido')?.touched" class="text-red-500 text-sm mt-1">
+              Apellido es requerido
+            </div>
           </div>
         
           <div *ngIf="isRegisterMode">
-            <label for="address">Dirección</label>
-            <input id="address" type="text" class="w-full border-2 rounded-md px-3 py-2" required />
+            <label for="direccion">Dirección</label>
+            <input id="direccion" type="text" formControlName="direccion" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('direccion')?.invalid && authForm.get('direccion')?.touched" class="text-red-500 text-sm mt-1">
+              Dirección es requerida
+            </div>
           </div>
         
           <div *ngIf="isRegisterMode">
-            <label for="phone">Móvil (opcional)</label>
-            <input id="phone" type="tel" class="w-full border-2 rounded-md px-3 py-2" />
+            <label for="telefono">Móvil</label>
+            <input id="telefono" type="tel" formControlName="telefono" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('telefono')?.invalid && authForm.get('telefono')?.touched" class="text-red-500 text-sm mt-1">
+              Teléfono es requerido
+            </div>
           </div>
         
           <div>
             <label for="email">Correo electrónico</label>
-            <input id="email" type="email" class="w-full border-2 rounded-md px-3 py-2" required />
+            <input id="email" type="email" formControlName="email" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+              Email válido es requerido
+            </div>
           </div>
         
           <div>
             <label for="password">Contraseña</label>
-            <input id="password" type="password" class="w-full border-2 rounded-md px-3 py-2" required />
+            <input id="password" type="password" formControlName="password" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+              Contraseña es requerida (mínimo 6 caracteres)
+            </div>
+          </div>
+          
+          <div *ngIf="isRegisterMode">
+            <label for="confirmPassword">Confirmar Contraseña</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" class="w-full border-2 rounded-md px-3 py-2" required />
+            <div *ngIf="authForm.get('confirmPassword')?.invalid && authForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
+              Confirmar contraseña es requerido
+            </div>
+            <div *ngIf="authForm.errors?.['passwordMismatch'] && authForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
+              Las contraseñas no coinciden
+            </div>
+          </div>
+          
+          <!-- Mensaje de error general -->
+          <div *ngIf="errorMessage" class="text-red-500 text-sm mt-1">
+            {{ errorMessage }}
           </div>
         
-          <input
+          <button
             type="submit"
-            [value]="isRegisterMode ? 'Registrarse' : 'Iniciar sesión'"
-            class="w-full bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-gray-800 cursor-pointer"
-          />
+            [disabled]="authForm.invalid || loading"
+            class="w-full bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-gray-800 cursor-pointer disabled:bg-gray-400"
+          >
+            <span *ngIf="loading">Procesando...</span>
+            <span *ngIf="!loading">{{ isRegisterMode ? 'Registrarse' : 'Iniciar sesión' }}</span>
+          </button>
         </form>
         
         <div class="my-6 text-center text-gray-400 font-semibold">— O —</div>
@@ -99,16 +142,6 @@
           >
             Iniciar sesión
           </a>
-          
-          <!-- Botón de Google, solo en Login -->
-          <button
-            *ngIf="!isRegisterMode"  
-            type="button"
-            class="w-full flex items-center justify-center gap-2 border-2 rounded-lg border-black text-black px-4 py-2 hover:bg-gray-100"
-          >
-            <img src="./assets/icons/google.svg" alt="Google" class="w-5 h-5" />
-            Iniciar sesión con Google
-          </button>
         </div>
       </div>
     </div>

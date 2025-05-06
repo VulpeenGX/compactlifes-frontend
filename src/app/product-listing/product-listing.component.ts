@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { CartService } from '../services/cart.service';
 import { WishlistService, WishlistItem } from '../services/wishlist.service';
@@ -9,6 +9,12 @@ import { NotificationService } from '../services/notification.service';
 import { Subscription, forkJoin } from 'rxjs';
 
 interface Categoria {
+  id: number;
+  nombre: string;
+  descripcion: string;
+}
+
+interface Estancia {
   id: number;
   nombre: string;
   descripcion: string;
@@ -24,6 +30,8 @@ interface Product {
   descuento?: number;
   categoria?: number;
   categoria_data?: Categoria;
+  estancia?: number;
+  estancia_data?: Estancia;
 }
 
 @Component({
@@ -41,6 +49,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   // Filtros
   searchTerm: string = '';
   selectedCategories: number[] = [];
+  selectedEstancias: number[] = [];
   priceRange: { min: number, max: number } = { min: 0, max: 1000 };
   minPossiblePrice: number = 0;
   maxPossiblePrice: number = 1000;
@@ -50,8 +59,9 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   // Ordenamiento
   sortOption: string = 'default';
   
-  // Categorías disponibles
+  // Categorías y estancias disponibles
   availableCategories: Categoria[] = [];
+  availableEstancias: Estancia[] = [];
   
   // Suscripciones
   private subscriptions: Subscription[] = [];
@@ -59,34 +69,131 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   // Estado del filtro lateral en móvil
   showFilters: boolean = false;
 
+  // Nombre del filtro aplicado
+  filtroNombre: string = '';
+
   constructor(
     private apiService: ApiService,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadData();
+    // Suscribirse a los cambios en los parámetros de la URL
+    this.subscriptions.push(
+      this.route.queryParams.subscribe(params => {
+        // Limpiar filtros previos
+        this.selectedCategories = [];
+        this.selectedEstancias = [];
+        this.filtroNombre = '';
+        
+        // Aplicar filtros según los parámetros
+        if (params['categoria']) {
+          const categoriaId = Number(params['categoria']);
+          this.selectedCategories = [categoriaId];
+        }
+        
+        if (params['estancia']) {
+          const estanciaId = Number(params['estancia']);
+          this.selectedEstancias = [estanciaId];
+        }
+        
+        if (params['nombre']) {
+          this.filtroNombre = params['nombre'];
+        }
+        
+        // Cargar datos después de procesar los parámetros
+        this.loadData();
+      })
+    );
   }
 
   loadData(): void {
-    // Cargar productos y categorías simultáneamente
+    // Cargar productos, categorías y estancias simultáneamente
     const products$ = this.apiService.getProducts();
-    const categories$ = this.apiService.getCategorias(); // Cambiado de getCategoriasConProductos a getCategorias
+    const categories$ = this.apiService.getCategorias();
+    const estancias$ = this.apiService.getEstancias();
     
     this.subscriptions.push(
-      forkJoin([products$, categories$]).subscribe(([productsData, categoriesData]: [any, any]) => {
+      forkJoin([products$, categories$, estancias$]).subscribe(([productsData, categoriesData, estanciasData]: [any, any, any]) => {
         this.allProducts = productsData;
         this.availableCategories = categoriesData;
+        this.availableEstancias = estanciasData;
         
         // Establecer rango de precios basado en los productos
         this.setPriceRange();
+        
+        // Actualizar nombres de filtros si están aplicados por ID
+        this.updateFilterNames();
         
         // Aplicar filtros iniciales
         this.applyFilters();
       })
     );
+  }
+
+  // Nuevo método para actualizar los nombres de los filtros
+  updateFilterNames(): void {
+    // Reiniciar el nombre del filtro
+    this.filtroNombre = '';
+    
+    // Crear un array para almacenar los nombres de los filtros
+    const filtrosSeleccionados: string[] = [];
+    
+    // Añadir nombres de categorías seleccionadas
+    if (this.selectedCategories.length > 0) {
+      this.selectedCategories.forEach(categoriaId => {
+        const categoria = this.availableCategories.find(cat => cat.id === categoriaId);
+        if (categoria) {
+          filtrosSeleccionados.push(categoria.nombre);
+        }
+      });
+    }
+    
+    // Añadir nombres de estancias seleccionadas
+    if (this.selectedEstancias.length > 0) {
+      this.selectedEstancias.forEach(estanciaId => {
+        const estancia = this.availableEstancias.find(est => est.id === estanciaId);
+        if (estancia) {
+          filtrosSeleccionados.push(estancia.nombre);
+        }
+      });
+    }
+    
+    // Combinar los nombres de filtros (máximo 2 para no sobrecargar la UI)
+    if (filtrosSeleccionados.length === 1) {
+      this.filtroNombre = filtrosSeleccionados[0];
+    } else if (filtrosSeleccionados.length > 1) {
+      this.filtroNombre = `${filtrosSeleccionados[0]} + ${filtrosSeleccionados.length - 1} más`;
+    }
+  }
+
+
+  toggleEstanciaFilter(estanciaId: number): void {
+    const index = this.selectedEstancias.indexOf(estanciaId);
+    if (index === -1) {
+      // Añadir la estancia a la selección sin eliminar las anteriores
+      this.selectedEstancias.push(estanciaId);
+      
+      // Actualizar el nombre del filtro solo si no hay ninguno
+      if (!this.filtroNombre) {
+        const estancia = this.availableEstancias.find(est => est.id === estanciaId);
+        if (estancia) {
+          this.filtroNombre = estancia.nombre;
+        }
+      }
+    } else {
+      // Si deseleccionamos la estancia, quitarla de la lista
+      this.selectedEstancias.splice(index, 1);
+      
+      // Actualizar el nombre del filtro si ya no hay estancias seleccionadas
+      if (this.selectedEstancias.length === 0) {
+        this.filtroNombre = '';
+      }
+    }
+    this.applyFilters();
   }
 
   setPriceRange(): void {
@@ -103,12 +210,28 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   toggleCategoryFilter(categoryId: number): void {
     const index = this.selectedCategories.indexOf(categoryId);
     if (index === -1) {
+      // Añadir la categoría a la selección sin eliminar las anteriores
       this.selectedCategories.push(categoryId);
+      
+      // Actualizar el nombre del filtro solo si no hay ninguno
+      if (!this.filtroNombre) {
+        const categoria = this.availableCategories.find(cat => cat.id === categoryId);
+        if (categoria) {
+          this.filtroNombre = categoria.nombre;
+        }
+      }
     } else {
+      // Si deseleccionamos la categoría, quitarla de la lista
       this.selectedCategories.splice(index, 1);
+      
+      // Actualizar el nombre del filtro si ya no hay categorías seleccionadas
+      if (this.selectedCategories.length === 0) {
+        this.filtroNombre = '';
+      }
     }
     this.applyFilters();
   }
+
 
   applyFilters(): void {
     let filtered = [...this.allProducts];
@@ -126,6 +249,14 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     if (this.selectedCategories.length > 0) {
       filtered = filtered.filter(product => 
         product.categoria && this.selectedCategories.includes(product.categoria)
+      );
+    }
+    
+    // Filtrar por estancias seleccionadas
+    if (this.selectedEstancias.length > 0) {
+      filtered = filtered.filter(product => 
+        product.estancia !== undefined && product.estancia !== null && 
+        this.selectedEstancias.includes(product.estancia)
       );
     }
     
@@ -182,22 +313,14 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   resetFilters(): void {
     this.searchTerm = '';
     this.selectedCategories = [];
+    this.selectedEstancias = [];
+    this.priceRange.min = this.minPossiblePrice;
+    this.priceRange.max = this.maxPossiblePrice;
     this.showOnlyInStock = false;
     this.showOnlyDiscounted = false;
     this.sortOption = 'default';
-    
-    // Restablecer el rango de precios a los valores originales
-    if (this.allProducts.length > 0) {
-      const prices = this.allProducts.map(p => p.precio);
-      this.priceRange.min = Math.min(...prices);
-      this.priceRange.max = Math.max(...prices);
-    } else {
-      this.priceRange.min = 0;
-      this.priceRange.max = 1000;
-    }
-    
+    this.filtroNombre = '';
     this.applyFilters();
-    this.notificationService.showNotification('Filtros restablecidos', 'info');
   }
 
   toggleFiltersVisibility(): void {
@@ -230,6 +353,38 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   getCategoryName(categoryId: number): string {
     const category = this.availableCategories.find(cat => cat.id === categoryId);
     return category ? category.nombre : 'Sin categoría';
+  }
+
+  // Método para obtener el nombre de la estancia por su ID
+  getEstanciaName(estanciaId: number): string {
+    // Verificamos si estanciaId es un número (incluyendo 0)
+    if (estanciaId !== undefined && estanciaId !== null) {
+      const estancia = this.availableEstancias.find(est => est.id === estanciaId);
+      return estancia ? estancia.nombre : 'Sin estancia';
+    }
+    return 'Sin estancia';
+  }
+
+  // Estado de las secciones de filtro (acordeón)
+  showCategorySection: boolean = true;
+  showEstanciaSection: boolean = false;
+  showPriceSection: boolean = true;
+  showOptionsSection: boolean = false;
+
+  toggleCategorySection(): void {
+    this.showCategorySection = !this.showCategorySection;
+  }
+  
+  toggleEstanciaSection(): void {
+    this.showEstanciaSection = !this.showEstanciaSection;
+  }
+  
+  togglePriceSection(): void {
+    this.showPriceSection = !this.showPriceSection;
+  }
+  
+  toggleOptionsSection(): void {
+    this.showOptionsSection = !this.showOptionsSection;
   }
 
   ngOnDestroy(): void {

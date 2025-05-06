@@ -40,9 +40,51 @@
         <button class="close-filters" (click)="toggleFiltersVisibility()">×</button>
       </div>
       
+      <!-- Mostrar filtros aplicados -->
+      <div class="filter-section" *ngIf="selectedCategories.length > 0 || selectedEstancias.length > 0 || showOnlyInStock || showOnlyDiscounted || searchTerm">
+        <h3>Filtros aplicados</h3>
+        <div class="applied-filters">
+          <!-- Eliminamos el filtro combinado por nombre que causaba la duplicación -->
+          
+          <!-- Filtros individuales de categoría -->
+          <div *ngFor="let catId of selectedCategories" class="applied-filter">
+            <span class="filter-badge">{{ getCategoryName(catId) }}</span>
+            <button class="clear-filter" (click)="toggleCategoryFilter(catId)">×</button>
+          </div>
+          
+          <!-- Filtros individuales de estancia -->
+          <div *ngFor="let estId of selectedEstancias" class="applied-filter">
+            <span class="filter-badge">{{ getEstanciaName(estId) }}</span>
+            <button class="clear-filter" (click)="toggleEstanciaFilter(estId)">×</button>
+          </div>
+          
+          <!-- Filtro de búsqueda -->
+          <div class="applied-filter" *ngIf="searchTerm">
+            <span class="filter-badge">Búsqueda: "{{ searchTerm }}"</span>
+            <button class="clear-filter" (click)="searchTerm = ''; applyFilters()">×</button>
+          </div>
+          
+          <!-- Filtro de stock -->
+          <div class="applied-filter" *ngIf="showOnlyInStock">
+            <span class="filter-badge">Solo en stock</span>
+            <button class="clear-filter" (click)="showOnlyInStock = false; applyFilters()">×</button>
+          </div>
+          
+          <!-- Filtro de descuentos -->
+          <div class="applied-filter" *ngIf="showOnlyDiscounted">
+            <span class="filter-badge">Con descuento</span>
+            <button class="clear-filter" (click)="showOnlyDiscounted = false; applyFilters()">×</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sección de categorías con acordeón -->
       <div class="filter-section">
-        <h3>Categorías</h3>
-        <div class="category-list-container">
+        <div class="filter-header" (click)="toggleCategorySection()">
+          <h3>Categorías</h3>
+          <span class="toggle-icon">{{ showCategorySection ? '−' : '+' }}</span>
+        </div>
+        <div class="category-list-container" *ngIf="showCategorySection">
           <div class="category-list">
             <div *ngFor="let category of availableCategories" class="category-item">
               <label>
@@ -58,9 +100,35 @@
         </div>
       </div>
       
+      <!-- Filtro de estancias con acordeón -->
       <div class="filter-section">
-        <h3>Precio</h3>
-        <div class="price-range">
+        <div class="filter-header" (click)="toggleEstanciaSection()">
+          <h3>Estancias</h3>
+          <span class="toggle-icon">{{ showEstanciaSection ? '−' : '+' }}</span>
+        </div>
+        <div class="category-list-container" *ngIf="showEstanciaSection">
+          <div class="category-list">
+            <div *ngFor="let estancia of availableEstancias" class="category-item">
+              <label>
+                <input 
+                  type="checkbox" 
+                  [checked]="selectedEstancias.includes(estancia.id)"
+                  (change)="toggleEstanciaFilter(estancia.id)"
+                >
+                {{ estancia.nombre }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sección de precio con acordeón -->
+      <div class="filter-section">
+        <div class="filter-header" (click)="togglePriceSection()">
+          <h3>Precio</h3>
+          <span class="toggle-icon">{{ showPriceSection ? '−' : '+' }}</span>
+        </div>
+        <div class="price-range" *ngIf="showPriceSection">
           <div class="price-slider">
             <div class="slider-container">
               <input 
@@ -91,31 +159,33 @@
         </div>
       </div>
       
+      <!-- Opciones adicionales con acordeón -->
       <div class="filter-section">
-        <h3>Disponibilidad</h3>
-        <div class="availability-options">
-          <label>
-            <input 
-              type="checkbox" 
-              [(ngModel)]="showOnlyInStock" 
-              (change)="applyFilters()"
-            >
-            Solo productos en stock
-          </label>
+        <div class="filter-header" (click)="toggleOptionsSection()">
+          <h3>Opciones adicionales</h3>
+          <span class="toggle-icon">{{ showOptionsSection ? '−' : '+' }}</span>
         </div>
-      </div>
-      
-      <div class="filter-section">
-        <h3>Ofertas</h3>
-        <div class="discount-options">
-          <label>
-            <input 
-              type="checkbox" 
-              [(ngModel)]="showOnlyDiscounted" 
-              (change)="applyFilters()"
-            >
-            Solo productos con descuento
-          </label>
+        <div *ngIf="showOptionsSection">
+          <div class="filter-option">
+            <label>
+              <input 
+                type="checkbox" 
+                [(ngModel)]="showOnlyInStock" 
+                (change)="applyFilters()"
+              >
+              Solo productos en stock
+            </label>
+          </div>
+          <div class="filter-option">
+            <label>
+              <input 
+                type="checkbox" 
+                [(ngModel)]="showOnlyDiscounted" 
+                (change)="applyFilters()"
+              >
+              Solo productos con descuento
+            </label>
+          </div>
         </div>
       </div>
       
@@ -146,6 +216,12 @@
           <div class="product-meta">
             <div class="product-category" *ngIf="product.categoria">
               <span class="category-badge">{{ getCategoryName(product.categoria) }}</span>
+            </div>
+            
+            <!-- Añadir badge de estancia -->
+            <!-- Modificar la condición para que acepte estancia con ID 0 -->
+            <div class="product-estancia" *ngIf="product.estancia !== undefined && product.estancia !== null">
+              <span class="estancia-badge">{{ getEstanciaName(product.estancia) }}</span>
             </div>
             
             <div class="stock-status">

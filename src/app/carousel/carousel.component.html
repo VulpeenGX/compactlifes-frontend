@@ -5,7 +5,7 @@
 
   <div
     #carousel
-    class="flex space-x-4 overflow-x-auto select-none product-carousel-container pb-10"
+    class="flex space-x-4 overflow-x-auto select-none product-carousel-container pb-10 smooth-scroll"
     (scroll)="onScroll()"
     (mousedown)="onMouseDown($event)"
     (mouseleave)="onMouseLeave()"
@@ -22,11 +22,13 @@
         Express
       </div>
 
-      <img
-        [src]="product.imagen"
-        [alt]="product.nombre"
-        class="w-32 h-32 object-cover rounded-full mb-2"
-      />
+      <div class="image-container">
+        <img
+          [src]="product.imagen"
+          [alt]="product.nombre"
+          class="w-32 h-32 object-contain rounded-full mb-2"
+        />
+      </div>
 
       <h2 class="text-lg font-semibold mb-1 text-center">
         <a href="" class="hover:underline">{{ product.nombre }}</a>

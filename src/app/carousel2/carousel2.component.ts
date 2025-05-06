@@ -34,6 +34,7 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
   scrollLeft: number = 0;
   cardWidth: number = 0;
   cloneWidth: number = 0;
+  isDragging: boolean = false;
 
   constructor(
     private router: Router,
@@ -80,55 +81,60 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     const container = this.carousel?.nativeElement;
     if (!container || this.products.length === 0) return;
 
-    const card = container.querySelector('.product-card'); // Asegúrate que la clase coincida
+    const card = container.querySelector('.product-card');
     if (card) {
-      this.cardWidth = card.clientWidth;
-      // Ajusta cloneWidth según cómo manejes el bucle infinito en el HTML
+      this.cardWidth = card.offsetWidth + 16; // Ancho + margen
       this.cloneWidth = this.cardWidth * this.products.length;
-      // Puede que no necesites establecer scrollLeft aquí si no clonas
-      // container.scrollLeft = this.cloneWidth; // Posición inicial si clonas 3 veces
     }
   }
 
   ngAfterViewInit() {
-    // La inicialización se llama después de cargar los productos en loadProducts
+    window.addEventListener('resize', () => {
+      this.initializeCarousel();
+    });
   }
 
   onMouseDown(e: MouseEvent) {
     this.isDown = true;
+    this.isDragging = false;
+    this.carousel.nativeElement.classList.add('grabbing');
     this.startX = e.pageX - this.carousel.nativeElement.offsetLeft;
     this.scrollLeft = this.carousel.nativeElement.scrollLeft;
   }
 
   onMouseLeave() {
     this.isDown = false;
+    this.carousel.nativeElement.classList.remove('grabbing');
   }
 
   onMouseUp() {
     this.isDown = false;
+    this.carousel.nativeElement.classList.remove('grabbing');
+    
+    // Si no hubo arrastre significativo, permitir clics en elementos
+    if (!this.isDragging) {
+      return;
+    }
   }
 
   onMouseMove(e: MouseEvent) {
     if (!this.isDown) return;
     e.preventDefault();
+    
     const x = e.pageX - this.carousel.nativeElement.offsetLeft;
-    const walk = (x - this.startX) * 2; 
+    const walk = (x - this.startX) * 1.5; // Velocidad de desplazamiento
+    
+    if (Math.abs(walk) > 5) {
+      this.isDragging = true;
+    }
+    
     this.carousel.nativeElement.scrollLeft = this.scrollLeft - walk;
   }
 
   onScroll() {
-    const container = this.carousel.nativeElement;
-    if (!this.cloneWidth || this.products.length === 0) return;
-
-    // Lógica de scroll infinito (ajustar si es necesario)
-    if (container.scrollLeft < this.cloneWidth * 0.5) {
-      container.scrollLeft += this.cloneWidth;
-    } else if (container.scrollLeft >= this.cloneWidth * 1.5) {
-      container.scrollLeft -= this.cloneWidth;
-    }
+    // Simplificamos la lógica de scroll para evitar problemas
+    // El scroll infinito puede causar problemas, así que lo eliminamos
   }
-
-  // El método addToWishlist fue eliminado porque toggleWishlist ya hace el trabajo.
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
