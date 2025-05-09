@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<body class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="py-16 text-center">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <p class="mt-4 text-gray-600">Cargando producto...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="py-16 text-center">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+
+    <!-- product-detail -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8" *ngIf="producto && !cargando">
+        <div>
+            <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full rounded-lg shadow-md">
+        </div>
+
+        <div>
+            <h2 class="text-3xl font-medium uppercase mb-2">{{ producto.nombre }}</h2>
+            <div class="space-y-2">
+                
+                <p class="space-x-2" *ngIf="producto.categoria_data">
+                    <span class="text-gray-800 font-semibold">Categoría: </span>
+                    <span class="text-gray-600">{{ producto.categoria_data.nombre }}</span>
+                </p>
+                <p class="space-x-2" *ngIf="producto.estancia_data">
+                    <span class="text-gray-800 font-semibold">Estancia: </span>
+                    <span class="text-gray-600">{{ producto.estancia_data.nombre }}</span>
+                </p>
+            </div>
+            <div class="flex items-baseline mb-1 space-x-2 font-roboto mt-4">
+                <p *ngIf="producto.descuento" class="text-xl text-green-500 font-semibold">{{ getPrecioConDescuento(producto) | currency:'EUR' }}</p>
+                <p *ngIf="!producto.descuento" class="text-xl text-green-500 font-semibold">{{ producto.precio | currency:'EUR' }}</p>
+                <p *ngIf="producto.descuento" class="text-base text-gray-400 line-through">{{ producto.precio | currency:'EUR' }}</p>
+                <span *ngIf="producto.descuento" class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">
+                    -{{ producto.descuento }}%
+                </span>
+            </div>
+
+            <p class="mt-4 text-gray-600">{{ producto.descripcion }}</p>
+
+            <div class="mt-4">
+                <h3 class="text-sm text-gray-800 uppercase mb-1">Cantidad</h3>
+                <div class="flex items-center border border-gray-300 w-max rounded overflow-hidden">
+                    <button (click)="disminuirCantidad()" [disabled]="cantidad <= 1" class="h-10 w-10 text-xl flex items-center justify-center bg-gray-100 text-gray-500 hover:bg-gray-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed">-</button>
+                    <div class="h-10 w-12 text-base flex items-center justify-center bg-white">{{ cantidad }}</div>
+                    <button (click)="aumentarCantidad()" class="h-10 w-10 text-xl flex items-center justify-center bg-gray-100 text-gray-500 hover:bg-gray-200 focus:outline-none">+</button>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
+                <button 
+                    (click)="addToCart()" 
+                    [disabled]="!producto.stock"
+                    class="bg-blue-500 border border-blue-500 text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-blue-500 transition duration-300"
+                    [class.opacity-50]="!producto.stock"
+                    [class.cursor-not-allowed]="!producto.stock"
+                >
+                    <i class="fa-solid fa-bag-shopping"></i> Añadir al carrito
+                </button>
+                <button 
+                    (click)="toggleWishlist()" 
+                    class="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:text-blue-500 transition duration-300"
+                    [class.text-blue-500]="isInWishlist()"
+                >
+                    <img *ngIf="!isInWishlist()" src="./assets/icons/wishlist.svg" alt="Añadir a wishlist" class="w-5 h-5">
+                    <img *ngIf="isInWishlist()" src="./assets/icons/wishlist-filled.svg" alt="Quitar de wishlist" class="w-5 h-5">
+                    {{ isInWishlist() ? 'En la wishlist' : 'Añadir a la wishlist' }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ./product-detail -->
+
+    <!-- description -->
+    <div class="pb-16" *ngIf="producto && !cargando">
+        <h3 class="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">Detalles del producto</h3>
+        
+        <!-- Tabla de especificaciones técnicas -->
+        <div class="w-full md:w-3/4 pt-6">
+            <table class="w-full border-collapse">
+                <tbody>
+                    <tr class="border-b">
+                        <td class="py-2 text-gray-600 font-medium">Colores</td>
+                        <td class="py-2 text-gray-800">{{ producto.colores_formateados || 'No especificados' }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 text-gray-600 font-medium">Materiales</td>
+                        <td class="py-2 text-gray-800">{{ producto.materiales_formateados || 'No especificados' }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 text-gray-600 font-medium">Peso</td>
+                        <td class="py-2 text-gray-800">{{ producto.peso ? (producto.peso + ' kg') : 'No especificado' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="w-full md:w-3/4 pt-6">
+            <div class="text-gray-600">
+                <p>Este elegante producto de CompactLifes está diseñado para ofrecer la máxima comodidad y estilo en tu hogar. Fabricado con materiales de alta calidad, este artículo combina funcionalidad y diseño para adaptarse perfectamente a tu espacio.</p>
+                <p>Su construcción duradera garantiza años de uso, mientras que su estética contemporánea complementa cualquier decoración. Ideal para quienes buscan productos que aporten tanto valor práctico como estético a su hogar.</p>
+                <p>En CompactLifes nos comprometemos con la calidad y la sostenibilidad, por lo que todos nuestros productos son fabricados siguiendo estrictos estándares de producción responsable.</p>
+            </div>
+        </div>
+    </div>
+    <!-- ./description -->
+
+    <!-- related product -->
+    <div class="pb-16 mt-8" *ngIf="productosRelacionados.length > 0">
+        <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 relative">
+            Productos relacionados
+            <span class="absolute bottom-0 left-0 w-20 h-1 bg-blue-500"></span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div *ngFor="let producto of productosRelacionados" 
+                 class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative group">
+                    <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 product-hover-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="flex gap-3">
+                            <button (click)="addRelatedToCart(producto)" [disabled]="!producto.stock"
+                                class="product-action-btn cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300"
+                                [class.opacity-50]="!producto.stock"
+                                [class.cursor-not-allowed]="!producto.stock">
+                                <img src="./assets/icons/shoppingBag.svg" alt="Añadir al carrito">
+                            </button>
+                            <button (click)="toggleWishlistForRelated(producto)"
+                                class="product-action-btn cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                <img *ngIf="!isProductInWishlist(producto.id)" src="./assets/icons/wishlist.svg" alt="Añadir a wishlist">
+                                <img *ngIf="isProductInWishlist(producto.id)" src="./assets/icons/wishlist-filled.svg" alt="Quitar de wishlist">
+                            </button>
+                            <button (click)="navigateToProduct(producto.id)"
+                                class="product-action-btn cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                <img src="./assets/icons/eye.svg" alt="Ver producto">
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="producto.descuento" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        -{{ producto.descuento }}%
+                    </div>
+                    <div *ngIf="!producto.stock" class="absolute top-2 left-2 bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        Agotado
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h4 (click)="navigateToProduct(producto.id)" class="font-medium cursor-pointer text-lg text-gray-800 hover:text-blue-500 transition mb-2 truncate">{{ producto.nombre }}</h4>
+                    <div class="flex items-baseline space-x-2 mb-2">
+                        <p *ngIf="producto.descuento" class="text-lg text-blue-600 font-semibold">{{ getPrecioConDescuento(producto) | currency:'EUR' }}</p>
+                        <p *ngIf="!producto.descuento" class="text-lg text-blue-600 font-semibold">{{ producto.precio | currency:'EUR' }}</p>
+                        <p *ngIf="producto.descuento" class="text-sm text-gray-400 line-through">{{ producto.precio | currency:'EUR' }}</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3">
+                        <span *ngIf="producto.stock" class="text-sm text-green-600 font-medium">En stock</span>
+                        <span *ngIf="!producto.stock" class="text-sm text-red-600 font-medium">Agotado</span>
+                        <span *ngIf="producto.categoria_data" class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                            {{ producto.categoria_data.nombre }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./related product -->
+</body>
+</html>

@@ -7,6 +7,7 @@ import { CartService } from '../services/cart.service';
 import { WishlistService, WishlistItem } from '../services/wishlist.service';
 import { NotificationService } from '../services/notification.service';
 import { Subscription, forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Categoria {
   id: number;
@@ -77,7 +78,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router // Asegurarse de que el Router esté inyectado
   ) {}
 
   ngOnInit(): void {
@@ -385,6 +387,11 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   
   toggleOptionsSection(): void {
     this.showOptionsSection = !this.showOptionsSection;
+  }
+
+  // Añadir método para navegar al producto
+  navigateToProduct(productId: number): void {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
   }
 
   ngOnDestroy(): void {

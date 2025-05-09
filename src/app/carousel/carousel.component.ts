@@ -4,7 +4,7 @@ import { ApiService } from '../services/api.service';
 import { WishlistService, WishlistItem } from '../services/wishlist.service';
 import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
-
+import { Router } from '@angular/router';
 interface Product {
   id: number;
   nombre: string;
@@ -39,6 +39,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     private apiService: ApiService,
     private wishlistService: WishlistService,
     private cartService: CartService,
+    private router: Router // Add Router
   ) {}
 
   ngOnInit() {
@@ -134,5 +135,10 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  // Añadir método para navegar al producto
+  navigateToProduct(productId: number) {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
   }
 }

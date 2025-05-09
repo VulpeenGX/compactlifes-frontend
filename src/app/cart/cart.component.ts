@@ -134,6 +134,15 @@ export class CartComponent implements OnInit, OnDestroy {
   goToRegister(): void {
     this.router.navigate(['/register']);
   }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
+  navigateToProduct(productId: number): void {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
+  }
 }
 
 

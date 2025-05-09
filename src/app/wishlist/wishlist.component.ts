@@ -103,4 +103,14 @@ export class WishlistComponent implements OnInit, OnDestroy {
   goToRegister(): void {
     this.router.navigate(['/register']);
   }
+
+  // Añadir método para navegar al producto
+  navigateToProduct(productId: number): void {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
 }

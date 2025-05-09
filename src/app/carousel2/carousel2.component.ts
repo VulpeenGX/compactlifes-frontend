@@ -139,4 +139,9 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  // Añadir método para navegar al producto
+  navigateToProduct(productId: number) {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
+  }
 }

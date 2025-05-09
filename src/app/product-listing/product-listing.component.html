@@ -202,7 +202,7 @@
       </div>
       
       <div *ngFor="let product of filteredProducts" class="product-card">
-        <div class="product-image">
+        <div (click)="navigateToProduct(product.id)" class="product-image cursor-pointer">
           <img [src]="product.imagen" [alt]="product.nombre">
           
           <div *ngIf="product.descuento && product.descuento > 0" class="discount-badge">
@@ -211,7 +211,7 @@
         </div>
         
         <div class="product-info">
-          <h3 class="product-name">{{ product.nombre }}</h3>
+          <h3 (click)="navigateToProduct(product.id)" class="cursor-pointer hover:underline product-name">{{ product.nombre }}</h3>
           
           <div class="product-meta">
             <div class="product-category" *ngIf="product.categoria">

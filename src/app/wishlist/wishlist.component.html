@@ -33,7 +33,7 @@
                     </span>
                     Mi carrito
                 </a>
-                <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
+                <a href="#" (click)="logout()" class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition">
                     <span class="mr-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -87,9 +87,9 @@
             <!-- Grid de productos cuando hay items -->
             <div *ngIf="wishlistItems.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 <div *ngFor="let product of wishlistItems" class="border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-                    <img [src]="product.imagen" [alt]="product.nombre" class="w-full h-48 object-cover">
+                    <img (click)="navigateToProduct(product.id)" [src]="product.imagen" [alt]="product.nombre" class="w-full h-48 object-cover cursor-pointer">
                     <div class="p-4">
-                        <h3 class="font-medium text-gray-900">{{ product.nombre }}</h3>
+                        <h3 (click)="navigateToProduct(product.id)" class="font-medium cursor-pointer text-gray-900">{{ product.nombre }}</h3>
                         <div class="flex justify-between items-center mt-2">
                             <!-- Mostrar precio con descuento -->
                             <div>

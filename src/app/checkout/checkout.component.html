@@ -18,7 +18,7 @@
   
   <!-- Botón para volver al carrito -->
   <div class="mb-4">
-    <button (click)="goBackToCart()" class="flex items-center text-blue-500 hover:text-blue-700">
+    <button (click)="goBackToCart()" class="flex items-center cursor-pointer text-blue-500 hover:text-blue-700">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
@@ -187,7 +187,7 @@
           </div>
         </div>
         
-        <button (click)="isFormValid() ? placeOrder() : showFormErrors()" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded transition w-full mt-6 font-medium" [ngClass]="{'opacity-70 cursor-not-allowed': !isFormValid() || orderProcessing, 'btn-enabled': isFormValid() && !orderProcessing, 'btn-disabled': !isFormValid() || orderProcessing}">
+        <button (click)="isFormValid() ? placeOrder() : showFormErrors()" class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white py-3 px-6 rounded transition w-full mt-6 font-medium" [ngClass]="{'opacity-70 cursor-not-allowed': !isFormValid() || orderProcessing, 'btn-enabled': isFormValid() && !orderProcessing, 'btn-disabled': !isFormValid() || orderProcessing}">
           <span *ngIf="!orderProcessing">Realizar pedido</span>
           <span *ngIf="orderProcessing" class="flex items-center justify-center">
             <span class="loading-spinner mr-2"></span>

@@ -73,6 +73,7 @@
         <a
           href="#"
           class="flex items-center text-gray-700 hover:text-blue-500 py-2 transition"
+          (click)="logout()"
         >
           <span class="mr-3">
             <svg
@@ -172,7 +173,7 @@
               class="w-24 h-24 object-cover mr-4"
             />
             <div class="flex-grow">
-              <h3 class="font-medium text-gray-900">{{ item.nombre }}</h3>
+              <h3 (click)="navigateToProduct(item.id)" class="font-medium cursor-pointer hover:underline text-gray-900">{{ item.nombre }}</h3>
               <p class="text-sm text-gray-500">
                 Disponibilidad:
                 <span
@@ -203,7 +204,7 @@
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5"
+                      class="h-5 w-5 cursor-pointer"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -223,7 +224,7 @@
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5"
+                      class="h-5 w-5 cursor-pointer"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -243,7 +244,7 @@
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
+                    class="h-5 w-5 cursor-pointer"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -271,7 +272,7 @@
           <h3 class="font-medium text-gray-800">Resumen del pedido</h3>
           <button
             (click)="clearCart()"
-            class="text-sm text-red-500 hover:text-red-700"
+            class="text-sm text-red-500 hover:text-red-700 cursor-pointer"
           >
             Vaciar carrito
           </button>
@@ -298,7 +299,7 @@
         
         <button
           (click)="goToCheckout()"
-          class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition"
+          class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition cursor-pointer"
         >
           Proceder al checkout
         </button>
