@@ -195,4 +195,18 @@ export class AuthService {
       error: error => console.error('Error al cargar carrito del usuario:', error)
     });
   }
+
+  updateUserData(userId: number, userData: {nombre: string, apellido: string, direccion: string, telefono: string}): Observable<any> {
+    return this.http.put<{usuario: User, mensaje: string}>(`${this.apiUrl}usuarios/${userId}/actualizar/`, userData).pipe(
+      tap(response => {
+        // Actualizar el usuario en el BehaviorSubject y en localStorage
+        this.currentUserSubject.next(response.usuario);
+        this.saveUserToStorage(response.usuario);
+      }),
+      catchError(error => {
+        console.error('Error al actualizar datos del usuario:', error);
+        throw error;
+      })
+    );
+  }
 }

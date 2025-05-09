@@ -37,7 +37,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   };
   
   private subscriptions: Subscription[] = [];
-
+  private userId: number | null = null;
+  
   constructor(
     private authService: AuthService,
     private router: Router
@@ -50,6 +51,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.isLoggedIn = !!user;
         if (user) {
           // Actualizar los datos del usuario desde el backend
+          this.userId = user.id;
           this.user.name = `${user.nombre} ${user.apellido}`;
           this.user.firstName = user.nombre;
           this.user.lastName = user.apellido;
@@ -70,10 +72,30 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   saveChanges(): void {
-    // Aquí se implementaría la lógica para guardar los cambios
-    // Por ahora solo mostramos un mensaje
-    console.log('Guardando cambios:', this.user);
-    alert('Información actualizada correctamente');
+    if (!this.userId) {
+      console.error('No hay usuario autenticado');
+      return;
+    }
+    
+    // Preparar los datos para enviar al backend
+    const userData = {
+      nombre: this.user.firstName,
+      apellido: this.user.lastName,
+      direccion: this.user.address,
+      telefono: this.user.phone
+    };
+    
+    // Llamar al servicio para actualizar los datos
+    this.authService.updateUserData(this.userId, userData).subscribe({
+      next: (response) => {
+        console.log('Datos actualizados:', response);
+        alert('Información actualizada correctamente');
+      },
+      error: (error) => {
+        console.error('Error al actualizar datos:', error);
+        alert('Error al actualizar la información');
+      }
+    });
   }
   
   logout(): void {
