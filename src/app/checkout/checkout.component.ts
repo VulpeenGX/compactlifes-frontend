@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService, CartItem } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
+import { EmailService } from '../services/email.service';
 import { Subscription } from 'rxjs';
 
 interface User {
@@ -90,7 +91,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private emailService: EmailService
   ) {}
 
   ngOnInit(): void {
@@ -401,14 +403,30 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
       
-      // Limpiar el carrito
-      this.cartService.clearCart();
-      
-      // Mostrar mensaje de éxito
-      alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber);
-      
-      // Redirigir a la página de confirmación (se podría implementar en el futuro)
-      this.router.navigate(['/']);
+      // Enviar correo electrónico de confirmación
+      this.emailService.sendOrderConfirmation(order).subscribe({
+        next: (response) => {
+          console.log('Correo enviado con éxito', response);
+          
+          // Limpiar el carrito
+          this.cartService.clearCart();
+          
+          // Mostrar mensaje de éxito
+          alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber);
+          
+          // Redirigir a la página de confirmación (se podría implementar en el futuro)
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error al enviar el correo', error);
+          
+          // Aún así, completamos el proceso de compra
+          this.cartService.clearCart();
+          alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber + 
+                '\n(Nota: Hubo un problema al enviar el correo de confirmación)');
+          this.router.navigate(['/']);
+        }
+      });
     }, 2000);
   }
 }
