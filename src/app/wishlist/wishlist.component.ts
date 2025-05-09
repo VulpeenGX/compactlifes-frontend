@@ -60,7 +60,6 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Limpiar suscripciones
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -104,7 +103,6 @@ export class WishlistComponent implements OnInit, OnDestroy {
     this.router.navigate(['/register']);
   }
 
-  // Añadir método para navegar al producto
   navigateToProduct(productId: number): void {
     this.router.navigate(['/product'], { queryParams: { id: productId } });
   }

@@ -103,7 +103,6 @@ export class AuthService {
         this.saveTokenToStorage(response.access);
         this.saveRefreshTokenToStorage(response.refresh);
         
-        // Sincronizar wishlist y carrito con el backend
         if (response.usuario && response.usuario.id) {
           this.syncUserData(response.usuario.id);
         }
@@ -131,7 +130,6 @@ export class AuthService {
         this.saveTokenToStorage(response.access);
         this.saveRefreshTokenToStorage(response.refresh);
         
-        // Sincronizar wishlist y carrito con el backend
         if (response.usuario && response.usuario.id) {
           this.syncUserData(response.usuario.id);
         }
@@ -166,16 +164,13 @@ export class AuthService {
     this.saveUserToStorage(null);
     this.saveTokenToStorage(null);
     this.saveRefreshTokenToStorage(null);
-    // No limpiamos wishlist ni carrito para mantenerlos disponibles para el usuario anónimo
   }
 
   // Método para sincronizar wishlist y carrito cuando el usuario inicia sesión
   private syncUserData(userId: number): void {
-    // Cargar wishlist del usuario desde el backend y combinarla con la local
     this.wishlistService.loadUserWishlist(userId.toString()).subscribe({
       next: serverWishlist => {
         this.wishlistService.mergeWishlists(serverWishlist);
-        // Después de combinar, sincronizar la wishlist combinada con el backend
         this.wishlistService.syncWithBackend(userId.toString()).subscribe({
           error: err => console.error('Error al sincronizar wishlist con el backend:', err)
         });
@@ -187,7 +182,6 @@ export class AuthService {
     this.cartService.loadUserCart(userId.toString()).subscribe({
       next: serverCart => {
         this.cartService.mergeCarts(serverCart);
-        // Después de combinar, sincronizar el carrito combinado con el backend
         this.cartService.syncWithBackend(userId.toString()).subscribe({
           error: err => console.error('Error al sincronizar carrito con el backend:', err)
         });
@@ -199,7 +193,6 @@ export class AuthService {
   updateUserData(userId: number, userData: {nombre: string, apellido: string, direccion: string, telefono: string}): Observable<any> {
     return this.http.put<{usuario: User, mensaje: string}>(`${this.apiUrl}usuarios/${userId}/actualizar/`, userData).pipe(
       tap(response => {
-        // Actualizar el usuario en el BehaviorSubject y en localStorage
         this.currentUserSubject.next(response.usuario);
         this.saveUserToStorage(response.usuario);
       }),

@@ -83,7 +83,7 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
 
     const card = container.querySelector('.product-card');
     if (card) {
-      this.cardWidth = card.offsetWidth + 16; // Ancho + margen
+      this.cardWidth = card.offsetWidth + 16; 
       this.cloneWidth = this.cardWidth * this.products.length;
     }
   }
@@ -111,7 +111,6 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     this.isDown = false;
     this.carousel.nativeElement.classList.remove('grabbing');
     
-    // Si no hubo arrastre significativo, permitir clics en elementos
     if (!this.isDragging) {
       return;
     }
@@ -122,7 +121,7 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     e.preventDefault();
     
     const x = e.pageX - this.carousel.nativeElement.offsetLeft;
-    const walk = (x - this.startX) * 1.5; // Velocidad de desplazamiento
+    const walk = (x - this.startX) * 1.5; 
     
     if (Math.abs(walk) > 5) {
       this.isDragging = true;
@@ -131,16 +130,10 @@ export class Carousel2Component implements OnInit, AfterViewInit, OnDestroy {
     this.carousel.nativeElement.scrollLeft = this.scrollLeft - walk;
   }
 
-  onScroll() {
-    // Simplificamos la lógica de scroll para evitar problemas
-    // El scroll infinito puede causar problemas, así que lo eliminamos
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // Añadir método para navegar al producto
   navigateToProduct(productId: number) {
     this.router.navigate(['/product'], { queryParams: { id: productId } });
   }

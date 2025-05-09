@@ -4,8 +4,8 @@
 }
 
 .product-carousel-container {
-  -ms-overflow-style: none;  /* IE y Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;    
   cursor: grab;
   padding: 20px 10px;
 }
@@ -15,7 +15,7 @@
 }
 
 .product-carousel-container::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari y Opera */
+  display: none;             
 }
 
 .wrap {

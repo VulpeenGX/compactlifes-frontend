@@ -21,7 +21,7 @@ export class ApiService {
     const endpointUrl: string = this.apiUrl + `productos/${id}/`;
     return this.http.get(endpointUrl).pipe(
       map((response: any) => {
-        console.log('Respuesta API producto:', response); // Añadir para depuración
+        console.log('Respuesta API producto:', response); 
         return response;
       })
     );

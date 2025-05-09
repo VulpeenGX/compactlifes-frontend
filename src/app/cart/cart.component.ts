@@ -88,7 +88,6 @@ export class CartComponent implements OnInit, OnDestroy {
     return this.cartService.getCartTotal();
   }
   
-  // Métodos faltantes que se utilizan en la plantilla
   getShippingCost(): number {
     return this.getTotal() < 300 ? 4.99 : 0;
   }

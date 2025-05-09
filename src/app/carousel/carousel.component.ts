@@ -39,7 +39,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     private apiService: ApiService,
     private wishlistService: WishlistService,
     private cartService: CartService,
-    private router: Router // Add Router
+    private router: Router 
   ) {}
 
   ngOnInit() {
@@ -80,7 +80,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const card = container.querySelector('.product-card');
     if (card) {
-      this.cardWidth = card.offsetWidth + 16; // Ancho + margen
+      this.cardWidth = card.offsetWidth + 16; 
       this.cloneWidth = this.cardWidth * this.products.length;
     }
   }
@@ -108,7 +108,6 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isDown = false;
     this.carousel.nativeElement.classList.remove('grabbing');
     
-    // Si no hubo arrastre significativo, permitir clics en elementos
     if (!this.isDragging) {
       return;
     }
@@ -128,16 +127,10 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     this.carousel.nativeElement.scrollLeft = this.scrollLeft - walk;
   }
 
-  onScroll() {
-    // Simplificamos la lógica de scroll para evitar problemas
-    // El scroll infinito puede causar problemas, así que lo eliminamos
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // Añadir método para navegar al producto
   navigateToProduct(productId: number) {
     this.router.navigate(['/product'], { queryParams: { id: productId } });
   }

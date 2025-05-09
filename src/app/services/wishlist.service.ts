@@ -102,7 +102,6 @@ export class WishlistService {
   mergeWishlists(serverWishlist: WishlistItem[]): void {
     const localWishlist = this.wishlistSubject.value;
     
-    // Combinar ambas listas evitando duplicados
     const mergedIds = new Set([...localWishlist, ...serverWishlist].map(item => item.id));
     const mergedWishlist: WishlistItem[] = [];
     

@@ -27,7 +27,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   formSubmitted: boolean = false;
   orderProcessing: boolean = false;
   
-  // Objeto para rastrear qué campos han sido tocados
   fieldTouched = {
     name: false,
     email: false,
@@ -50,7 +49,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     phone: ''
   };
   
-  // Datos del formulario
   shippingInfo = {
     name: '',
     email: '',
@@ -60,7 +58,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     phone: ''
   };
   
-  // Información de la tarjeta
   cardInfo = {
     number: '',
     expiry: '',
@@ -68,12 +65,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     name: ''
   };
   
-  // Información de PayPal
   paypalInfo = {
     phone: ''
   };
   
-  // Información de Bizum
   bizumInfo = {
     phone: ''
   };
@@ -99,9 +94,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.cartService.cart$.subscribe(items => {
         this.cartItems = items;
-        
-        // Si el carrito está vacío, redirigir al carrito
-        if (items.length === 0) {
+                if (items.length === 0) {
           this.router.navigate(['/cart']);
         }
       })
@@ -170,49 +163,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         !this.shippingInfo.postalCode || !this.shippingInfo.phone) {
       return false;
     }
-    
-    // Verificar formato de código postal
-    if (!this.validatePostalCode(this.shippingInfo.postalCode)) {
+        if (!this.validatePostalCode(this.shippingInfo.postalCode)) {
       return false;
     }
-    
-    // Verificar formato de teléfono
-    if (!this.validatePhoneNumber(this.shippingInfo.phone)) {
+        if (!this.validatePhoneNumber(this.shippingInfo.phone)) {
       return false;
     }
-    
-    // Verificar campos de tarjeta si el método de pago es tarjeta
-    if (this.paymentMethod === 'card') {
+        if (this.paymentMethod === 'card') {
       if (!this.cardInfo.number || !this.cardInfo.expiry || 
           !this.cardInfo.cvv || !this.cardInfo.name) {
         return false;
       }
-      
-      // Verificar número de tarjeta con algoritmo Luhn
-      if (!this.validateCreditCard(this.cardInfo.number)) {
+            if (!this.validateCreditCard(this.cardInfo.number)) {
         return false;
       }
-      
-      // Verificar formato y vigencia de fecha de expiración
-      if (!this.validateExpiryDate(this.cardInfo.expiry)) {
+            if (!this.validateExpiryDate(this.cardInfo.expiry)) {
         return false;
       }
-      
-      // Verificar formato de CVV
-      if (!this.validateCVV(this.cardInfo.cvv)) {
+            if (!this.validateCVV(this.cardInfo.cvv)) {
         return false;
       }
     }
-    
-    // Verificar teléfono para PayPal
-    if (this.paymentMethod === 'paypal') {
+        if (this.paymentMethod === 'paypal') {
       if (!this.paypalInfo.phone || !this.validatePhoneNumber(this.paypalInfo.phone)) {
         return false;
       }
     }
-    
-    // Verificar teléfono para Bizum
-    if (this.paymentMethod === 'bizum') {
+        if (this.paymentMethod === 'bizum') {
       if (!this.bizumInfo.phone || !this.validatePhoneNumber(this.bizumInfo.phone)) {
         return false;
       }
@@ -232,35 +209,24 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     const pattern = /^(?:\+34)?[6789]\d{8}$/;
     return pattern.test(phone);
   }
-  
-  // Validación de CVV (3 o 4 dígitos)
-  validateCVV(cvv: string): boolean {
+    validateCVV(cvv: string): boolean {
     const cvvRegex = /^[0-9]{3,4}$/;
     return cvvRegex.test(cvv);
   }
   
   // Validación de fecha de expiración (formato MM/AA y que no esté caducada)
   validateExpiryDate(expiryDate: string): boolean {
-    // Verificar formato MM/AA
     const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
     if (!expiryRegex.test(expiryDate)) {
       return false;
     }
-    
-    // Extraer mes y año
-    const [month, year] = expiryDate.split('/');
-    
-    // Convertir a fecha (20 indica 2000+)
-    const expiryMonth = parseInt(month, 10);
+        const [month, year] = expiryDate.split('/');
+        const expiryMonth = parseInt(month, 10);
     const expiryYear = parseInt('20' + year, 10);
-    
-    // Obtener fecha actual
-    const currentDate = new Date();
+        const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // getMonth() devuelve 0-11
     const currentYear = currentDate.getFullYear();
-    
-    // Verificar que la fecha no esté caducada
-    if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
+        if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
       return false;
     }
     
@@ -269,20 +235,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   
   // Validación de tarjeta de crédito usando algoritmo Luhn
   validateCreditCard(cardNumber: string): boolean {
-    // Eliminar espacios y guiones
     const sanitizedNumber = cardNumber.replace(/[\s-]/g, '');
-    
-    // Verificar que solo contiene dígitos y tiene longitud válida (13-19 dígitos)
-    if (!/^\d{13,19}$/.test(sanitizedNumber)) {
+        if (!/^\d{13,19}$/.test(sanitizedNumber)) {
       return false;
     }
     
-    // Implementación del algoritmo de Luhn
+    // algoritmo de Luhn
     let sum = 0;
     let shouldDouble = false;
-    
-    // Recorrer el número de derecha a izquierda
-    for (let i = sanitizedNumber.length - 1; i >= 0; i--) {
+        for (let i = sanitizedNumber.length - 1; i >= 0; i--) {
       let digit = parseInt(sanitizedNumber.charAt(i));
       
       if (shouldDouble) {
@@ -291,21 +252,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           digit -= 9;
         }
       }
-      
       sum += digit;
       shouldDouble = !shouldDouble;
     }
-    
-    // El número es válido si la suma es múltiplo de 10
-    return sum % 10 === 0;
+        return sum % 10 === 0;
   }
 
   // Método para marcar un campo como tocado
   validateField(fieldName: string): void {
-    // Marcar el campo como tocado
     (this.fieldTouched as {[key: string]: boolean})[fieldName] = true;
-    
-    // Si el campo es de método de pago, validar campos relacionados
     if (fieldName === 'paymentMethod') {
       if (this.paymentMethod === 'card') {
         this.fieldTouched.cardNumber = true;
@@ -322,13 +277,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Método para mostrar errores cuando se hace clic en el botón deshabilitado
   showFormErrors(): void {
-    // Marcar todos los campos como tocados para mostrar todos los errores
     Object.keys(this.fieldTouched).forEach(key => {
       (this.fieldTouched as {[key: string]: boolean})[key] = true;
     });
-    
-    // Mostrar un mensaje de alerta con los errores
-    let errorMessage = 'Por favor, completa correctamente todos los campos obligatorios:\n';
+        let errorMessage = 'Por favor, completa correctamente todos los campos obligatorios:\n';
     
     // Verificar campos de envío
     if (!this.shippingInfo.name) errorMessage += '- Nombre completo\n';
@@ -365,13 +317,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     
     alert(errorMessage);
-    
-    // Hacer scroll hacia arriba para mostrar los errores
-    window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
   }
 
   placeOrder(): void {
-    // Si el formulario no es válido, mostrar errores y salir
     if (!this.isFormValid()) {
       this.showFormErrors();
       return;
@@ -380,12 +329,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.formSubmitted = true;
     this.orderProcessing = true;
     
-    // Simulamos un proceso de pago
     setTimeout(() => {
-      // Aquí iría la lógica para procesar el pedido
       this.orderProcessing = false;
       
-      // Crear objeto de pedido
       const order = {
         items: this.cartItems,
         shipping: this.shippingInfo,
@@ -397,8 +343,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         date: new Date(),
         orderNumber: 'ORD-' + Math.floor(Math.random() * 1000000)
       };
-      
-      // Guardar el pedido en localStorage para simular una base de datos
       const orders = JSON.parse(localStorage.getItem('orders') || '[]');
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
@@ -407,20 +351,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.emailService.sendOrderConfirmation(order).subscribe({
         next: (response) => {
           console.log('Correo enviado con éxito', response);
-          
-          // Limpiar el carrito
           this.cartService.clearCart();
-          
-          // Mostrar mensaje de éxito
           alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber);
-          
-          // Redirigir a la página de confirmación (se podría implementar en el futuro)
           this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('Error al enviar el correo', error);
           
-          // Aún así, completamos el proceso de compra
           this.cartService.clearCart();
           alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber + 
                 '\n(Nota: Hubo un problema al enviar el correo de confirmación)');

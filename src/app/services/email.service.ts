@@ -6,13 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmailService {
-  // URL del backend que manejará el envío de correos
   private apiUrl = 'https://api.emailjs.com/api/v1.0/email/send';
   
-  // ID de servicio y plantilla de EmailJS
-  private serviceId = 'service_hkp1zea'; // Reemplazar con tu ID de servicio
-  private templateId = 'template_r3wlcuw'; // Reemplazar con tu ID de plantilla
-  private userId = 'R2wMGaN5EQnOgQITm'; // Reemplazar con tu ID de usuario
+  private serviceId = 'service_hkp1zea'; 
+  private templateId = 'template_r3wlcuw'; 
+  private userId = 'R2wMGaN5EQnOgQITm'; 
 
   constructor(private http: HttpClient) { }
 
@@ -45,7 +43,7 @@ export class EmailService {
     // Modificar para aceptar respuesta de texto en lugar de JSON
     return this.http.post(this.apiUrl, emailData, { 
       headers,
-      responseType: 'text' // Cambiar el tipo de respuesta a texto
+      responseType: 'text' 
     });
   }
 

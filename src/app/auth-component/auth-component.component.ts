@@ -93,7 +93,6 @@ export class AuthComponentComponent implements OnInit {
         error: (error) => {
           this.loading = false;
           if (error.error && typeof error.error === 'object') {
-            // Extraer mensajes de error del backend
             const errorMessages = [];
             for (const key in error.error) {
               if (error.error.hasOwnProperty(key)) {

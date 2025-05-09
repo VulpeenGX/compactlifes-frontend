@@ -64,7 +64,6 @@ export class CartService {
       this.saveToLocalStorage(updatedCart);
       this.notificationService.showNotification(`Se ha sumado ${product.nombre} a tu carrito`, 'cart');
     } else {
-      // Si es un producto nuevo, añadirlo al carrito
       const cartItem: CartItem = {
         ...product,
         quantity: quantity
@@ -131,25 +130,20 @@ export class CartService {
   mergeCarts(serverCart: CartItem[]): void {
     const localCart = this.cartSubject.value;
     
-    // Crear un mapa para combinar cantidades
     const mergedCartMap = new Map<number, CartItem>();
     
-    // Añadir items del carrito local
     localCart.forEach(item => {
       mergedCartMap.set(item.id, { ...item });
     });
     
-    // Combinar con items del servidor (prevalece la mayor cantidad)
     serverCart.forEach(serverItem => {
       const localItem = mergedCartMap.get(serverItem.id);
       if (localItem) {
-        // Si el item existe en ambos, mantener la mayor cantidad
         mergedCartMap.set(serverItem.id, {
           ...serverItem,
           quantity: Math.max(localItem.quantity, serverItem.quantity)
         });
       } else {
-        // Si solo existe en el servidor, añadirlo
         mergedCartMap.set(serverItem.id, { ...serverItem });
       }
     });
