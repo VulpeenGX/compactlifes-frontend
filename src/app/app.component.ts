@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { NotificationComponent } from './notification/notification.component';
+import { CookieBannerComponent } from './cookie-banner/cookie-banner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, NotificationComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, NotificationComponent, CookieBannerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

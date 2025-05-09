@@ -16,8 +16,8 @@
 
     <!-- product-detail -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8" *ngIf="producto && !cargando">
-        <div>
-            <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full rounded-lg shadow-md">
+        <div class="product-image-container">
+            <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full h-auto max-h-[500px] object-contain rounded-lg shadow-md">
         </div>
 
         <div>
@@ -120,7 +120,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             <div *ngFor="let producto of productosRelacionados" 
                  class="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                <div class="relative group">
+                <div class="relative group product-thumbnail">
                     <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105">
                     <div class="absolute inset-0 product-hover-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <div class="flex gap-3">

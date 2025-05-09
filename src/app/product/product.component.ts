@@ -364,6 +364,12 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.router.navigate(['/product'], { queryParams: { id: productId } });
   }
 
+  // Método para manejar errores de carga de imágenes
+  handleImageError(event: any) {
+    // Reemplazar con una imagen por defecto cuando hay error
+    event.target.src = './assets/images/placeholder.jpg';
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }

@@ -1,0 +1,26 @@
+<div *ngIf="showBanner" class="cookie-banner fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t-4 border-blue-300 p-4 z-50">
+  <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+    <div class="mb-4 md:mb-0 flex items-center">
+      <div class="mr-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+      <div>
+        <p class="text-gray-700 font-medium mb-1">CompactLifes - Política de Cookies</p>
+        <p class="text-sm text-gray-600">
+          Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al continuar navegando, aceptas nuestra 
+          <a href="/politica-cookies" class="text-blue-500 hover:underline">política de cookies</a>.
+        </p>
+      </div>
+    </div>
+    <div class="flex space-x-3">
+      <button (click)="acceptCookies()" class="cursor-pointer accept-btn bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+        Aceptar
+      </button>
+      <button (click)="rejectCookies()" class="cursor-pointer reject-btn bg-white border border-blue-300 text-blue-500 hover:bg-blue-50 px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+        Rechazar
+      </button>
+    </div>
+  </div>
+</div>
