@@ -318,10 +318,6 @@
   filter: brightness(0);
 }
 
-.wishlist-btn.active img {
-  filter: brightness(0);
-}
-
 .price-inputs {
   display: flex;
   gap: 10px;
@@ -380,11 +376,6 @@
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos para el botón de wishlist (copiados del carousel) */
@@ -532,16 +523,6 @@
   background-color: #f5f5f5;
 }
 
-
-
-.wishlist-btn-new.active img {
-  filter: brightness(0);
-}
-
-/* Eliminar el botón de wishlist anterior */
-.wishlist-btn {
-  display: none;
-}
 
 .price-range-slider::-moz-range-thumb {
   width: 20px;
