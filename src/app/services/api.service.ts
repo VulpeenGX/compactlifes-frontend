@@ -29,7 +29,7 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/api/register/`, userData);
   }
 
-  // Métodos para productos (ejemplo)
+  // Métodos para productos
   getProducts(): Observable<any> {
     return this.http.get(`${this.apiUrl}/api/productos/`, { headers: this.getAuthHeaders() });
   }
@@ -38,5 +38,24 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/api/productos/${id}/`, { headers: this.getAuthHeaders() });
   }
 
-  // Puedes añadir más métodos según necesites
+  // Métodos faltantes que causan errores
+  getProductsOffers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/productos/ofertas/`, { headers: this.getAuthHeaders() });
+  }
+
+  getProductsWithoutOffers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/productos/sin-ofertas/`, { headers: this.getAuthHeaders() });
+  }
+
+  getCategorias(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/categorias/`, { headers: this.getAuthHeaders() });
+  }
+
+  getEstancias(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/estancias/`, { headers: this.getAuthHeaders() });
+  }
+
+  getProductosRelacionados(filtroId: number, productoId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/productos/relacionados/${filtroId}/${productoId}/`, { headers: this.getAuthHeaders() });
+  }
 }
