@@ -17,7 +17,7 @@ export interface WishlistItem {
   providedIn: 'root'
 })
 export class WishlistService {
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = 'https://compactlifes-api.onrender.com/api/';
   private wishlistKey = 'compactlifes_wishlist';
   private wishlistSubject = new BehaviorSubject<WishlistItem[]>([]);
   public wishlist$ = this.wishlistSubject.asObservable();

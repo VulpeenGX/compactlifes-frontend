@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 import { WishlistService } from './wishlist.service';
 import { CartService } from './cart.service';
+import { environment } from '../../environments/environment';
 
 interface User {
   id: number;
@@ -25,7 +26,7 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = environment.apiUrl + '/api/';
   private userKey = 'compactlifes_user';
   private tokenKey = 'compactlifes_token';
   private refreshTokenKey = 'compactlifes_refresh_token';

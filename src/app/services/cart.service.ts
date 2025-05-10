@@ -18,7 +18,7 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = 'https://compactlifes-api.onrender.com/api/';
   private cartKey = 'compactlifes_cart';
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   public cart$ = this.cartSubject.asObservable();
