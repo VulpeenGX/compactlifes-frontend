@@ -1,0 +1,51 @@
+/* Estilos para el componente de carrito */
+.product-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+}
+
+/* Asegurar que los controles de cantidad tengan un ancho fijo */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+}
+
+/* Estilo para el contador de cantidad */
+.quantity-display {
+  width: 24px;
+  text-align: center;
+}
+
+/* Asegurar que los botones de acción tengan un tamaño consistente */
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+/* Mejorar la visualización en dispositivos móviles */
+@media (max-width: 640px) {
+  .product-details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .quantity-controls {
+    margin-top: 8px;
+  }
+}
+
+/* Nuevos estilos para garantizar alineación */
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}

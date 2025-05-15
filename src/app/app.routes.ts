@@ -7,6 +7,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ProductListingComponent } from './product-listing/product-listing.component';
 import { AccountComponent } from './account/account.component';
 import { ProductComponent } from './product/product.component';
+import { Page404Component } from './page404/page404.component';
 export const routes: Routes = [
     {path: '', component: HomeViewComponentComponent},
     {path: 'login', component: AuthComponentComponent},
@@ -17,6 +18,8 @@ export const routes: Routes = [
     {path: 'product-listing', component: ProductListingComponent},
     {path: 'account', component: AccountComponent},
     {path: 'product', component: ProductComponent},
+    {path: '404', component: Page404Component},
+    {path: '**', redirectTo: '/404'}
 ];
 
 

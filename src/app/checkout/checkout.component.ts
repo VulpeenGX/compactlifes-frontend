@@ -26,6 +26,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   formSubmitted: boolean = false;
   orderProcessing: boolean = false;
+  orderCompleted: boolean = false;
+  orderNumber: string = '';
   
   fieldTouched = {
     name: false,
@@ -347,21 +349,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
       
+      // Guardar el número de pedido para mostrarlo en el mensaje de agradecimiento
+      this.orderNumber = order.orderNumber;
+      this.orderCompleted = true;
+      
       // Enviar correo electrónico de confirmación
       this.emailService.sendOrderConfirmation(order).subscribe({
         next: (response) => {
           console.log('Correo enviado con éxito', response);
           this.cartService.clearCart();
-          alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber);
-          this.router.navigate(['/']);
+          
+          // Redirigir al home después de 5 segundos
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 5000);
         },
         error: (error) => {
           console.error('Error al enviar el correo', error);
           
+          // Mostrar mensaje de error pero continuar con el proceso
+          alert('Se ha procesado tu pedido correctamente, pero ha habido un problema al enviar el correo de confirmación. Por favor, contacta con soporte@compactlifes.com si no recibes la confirmación en tu correo.');
+          
           this.cartService.clearCart();
-          alert('¡Pedido realizado con éxito! Tu número de pedido es: ' + order.orderNumber + 
-                '\n(Nota: Hubo un problema al enviar el correo de confirmación)');
-          this.router.navigate(['/']);
+          
+          // Redirigir al home después de 5 segundos
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 5000);
         }
       });
     }, 2000);

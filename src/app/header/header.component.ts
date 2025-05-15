@@ -5,6 +5,8 @@ import { WishlistService } from '../services/wishlist.service';
 import { CartService } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
+import { ApiService } from '../services/api.service';
+import { FormsModule } from '@angular/forms';
 
 interface Elemento {
   titulo: string;
@@ -20,10 +22,19 @@ interface MenuItem {
   elementos: Elemento[];
 }
 
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  descripcion: string;
+  imagen: string;
+  stock: boolean;
+}
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -34,6 +45,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   userName: string = '';
   private subscriptions: Subscription[] = [];
+  searchTerm: string = '';
+  searchResults: Producto[] = [];
+  showResults: boolean = false;
+  
   menuItems: MenuItem[] = [
     {
       nombre: 'Productos',
@@ -67,16 +82,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
       nombre: 'Servicios',
       icono: './assets/icons/sms.svg',
       elementos: [
-        { titulo: 'Todos nuestros servicios', imagen: '', enlace: '#' },
-        { titulo: 'Seguimiento de tu pedido', imagen: '', enlace: '#' },
-        { titulo: 'Diseño de interiores', imagen: '', enlace: '#' },
-        { titulo: 'Financiación', imagen: '', enlace: '#' },
-        { titulo: 'Instalación', imagen: '', enlace: '#' },
-        { titulo: 'Mercado circular', imagen: '', enlace: '#' },
-        { titulo: 'Ofertas exclusivas', imagen: '', enlace: '#' },
-        { titulo: 'Revende tus muebles', imagen: '', enlace: '#' },
-        { titulo: 'Compra por telefono', imagen: '', enlace: '#' },
-        { titulo: 'CompactLifes, Innovación en cada rincón', imagen: '', enlace: '#' },
+        { titulo: 'Todos nuestros servicios', imagen: '', enlace: '404' },
+        { titulo: 'Seguimiento de tu pedido', imagen: '', enlace: '404' },
+        { titulo: 'Diseño de interiores', imagen: '', enlace: '404' },
+        { titulo: 'Financiación', imagen: '', enlace: '404' },
+        { titulo: 'Instalación', imagen: '', enlace: '404' },
+        { titulo: 'Mercado circular', imagen: '', enlace: '404' },
+        { titulo: 'Ofertas exclusivas', imagen: '', enlace: '404' },
+        { titulo: 'Revende tus muebles', imagen: '', enlace: '404' },
+        { titulo: 'Compra por telefono', imagen: '', enlace: '404' },
+        { titulo: 'CompactLifes, Innovación en cada rincón', imagen: '', enlace: '404' },
       ],
     }
   ];
@@ -85,7 +100,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private wishlistService: WishlistService,
     private cartService: CartService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {}
 
   get elementosActivos(): Elemento[] {
@@ -154,5 +170,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate([elemento.enlace]);
     }
+  }
+
+  // Nueva función para buscar productos
+  searchProducts(): void {
+    if (this.searchTerm.trim() === '') {
+      this.searchResults = [];
+      this.showResults = false;
+      return;
+    }
+
+    this.apiService.getProducts().subscribe((productos: any) => {
+      this.searchResults = productos.filter((producto: Producto) => 
+        producto.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        producto.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ).slice(0, 5); // Limitamos a 5 resultados para no sobrecargar la UI
+      
+      this.showResults = this.searchResults.length > 0;
+    });
+  }
+
+  // Función para navegar al producto seleccionado
+  navigateToProduct(productId: number): void {
+    this.router.navigate(['/product'], { queryParams: { id: productId } });
+    this.searchTerm = '';
+    this.showResults = false;
+  }
+
+  // Función para cerrar los resultados de búsqueda cuando se hace clic fuera
+  closeSearchResults(): void {
+    setTimeout(() => {
+      this.showResults = false;
+    }, 200);
   }
 }

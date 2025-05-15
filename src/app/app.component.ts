@@ -20,7 +20,7 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const hiddenRoutes = ['/login', '/register'];
+        const hiddenRoutes = ['/login', '/register', '/404', '/not-found'];
         this.showLayout = !hiddenRoutes.includes(event.urlAfterRedirects);
       }
     });

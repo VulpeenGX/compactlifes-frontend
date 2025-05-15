@@ -11,6 +11,7 @@ export class EmailService {
   private serviceId = 'service_hkp1zea'; 
   private templateId = 'template_r3wlcuw'; 
   private userId = 'R2wMGaN5EQnOgQITm'; 
+  private baseUrl = 'https://compactlifes.netlify.app'; // URL base para imágenes absolutas
 
   constructor(private http: HttpClient) { }
 
@@ -22,25 +23,45 @@ export class EmailService {
   sendOrderConfirmation(orderData: any): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
+    // Asegurarse de que el total sea un número antes de usar toFixed
+    const total = typeof orderData.total === 'number' ? 
+      orderData.total.toFixed(2) + ' €' : 
+      orderData.total + ' €';
+    
+    // Verificar que el email sea válido
+    const email = orderData.shipping.email || '';
+    console.log('Email de destino:', email);
+    
+    if (!email || !email.includes('@')) {
+      console.error('Email de destino inválido:', email);
+      return new Observable(observer => {
+        observer.error('Email de destino inválido');
+        observer.complete();
+      });
+    }
+    
+    // Crear objeto de datos simplificado para EmailJS
     const emailData = {
       service_id: this.serviceId,
       template_id: this.templateId,
       user_id: this.userId,
       template_params: {
-        to_email: orderData.shipping.email,
         to_name: orderData.shipping.name,
+        to_email: email,
         order_number: orderData.orderNumber,
         order_date: new Date(orderData.date).toLocaleDateString('es-ES'),
-        order_total: orderData.total.toFixed(2) + ' €',
-        shipping_address: `${orderData.shipping.address}, ${orderData.shipping.city}, ${orderData.shipping.postalCode}`,
+        order_total: total,
         payment_method: this.getPaymentMethodName(orderData.payment.method),
+        shipping_address: `${orderData.shipping.address}, ${orderData.shipping.city}, ${orderData.shipping.postalCode}`,
         items: this.formatOrderItems(orderData.items),
         support_email: 'soporte@compactlifes.com',
-        website_url: 'https://compactlifes.com'
+        website_url: this.baseUrl.replace(/[`'"]/g, '').trim() // Asegurarse de eliminar backticks
       }
     };
 
-    // Modificar para aceptar respuesta de texto en lugar de JSON
+    console.log('Enviando datos a EmailJS:', JSON.stringify(emailData));
+
+    // Enviar solicitud a EmailJS
     return this.http.post(this.apiUrl, emailData, { 
       headers,
       responseType: 'text' 
@@ -53,24 +74,41 @@ export class EmailService {
    * @returns Cadena HTML con los elementos formateados
    */
   private formatOrderItems(items: any[]): string {
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return '<tr><td colspan="4">No hay productos en este pedido</td></tr>';
+    }
+    
     let itemsHtml = '';
     
     items.forEach(item => {
-      const precio = item.descuento ? 
-        (item.precio - (item.precio * item.descuento / 100)).toFixed(2) : 
-        item.precio.toFixed(2);
-      
-      itemsHtml += `
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;">
-            <img src="${item.imagen}" alt="${item.nombre}" style="width: 50px; height: 50px; object-fit: cover;">
-          </td>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.nombre}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.quantity}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;">${precio} €</td>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;">${(precio * item.quantity).toFixed(2)} €</td>
-        </tr>
-      `;
+      try {
+        // Convertir precio a número usando parseFloat para mayor seguridad
+        const itemPrecio = parseFloat(String(item.precio)) || 0;
+        const descuento = parseFloat(String(item.descuento)) || 0;
+        
+        const precio = descuento > 0 ? 
+          (itemPrecio - (itemPrecio * descuento / 100)).toFixed(2) : 
+          itemPrecio.toFixed(2);
+        
+        // Crear fila de tabla HTML para el producto (sin imagen)
+        itemsHtml += `
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.nombre}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.quantity}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${precio} €</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${(parseFloat(precio) * item.quantity).toFixed(2)} €</td>
+          </tr>
+        `;
+      } catch (error) {
+        console.error('Error al formatear producto:', item, error);
+        itemsHtml += `
+          <tr>
+            <td colspan="4" style="padding: 10px; border-bottom: 1px solid #eee; color: #ff0000;">
+              Error al procesar este producto
+            </td>
+          </tr>
+        `;
+      }
     });
     
     return itemsHtml;

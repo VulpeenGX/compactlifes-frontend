@@ -11,7 +11,7 @@
 
     <!-- Barra de búsqueda -->
     <div class="hidden sm:flex sm:flex-grow sm:justify-center">
-      <form action="#" class="w-full max-w-3xl">
+      <form (submit)="$event.preventDefault(); searchProducts()" class="w-full max-w-3xl relative">
         <div class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden hover:bg-gray-200">
           <div class="grid place-items-center h-full w-12 text-gray-300">
             <img src="./assets/icons/search.svg" alt="search-icon">
@@ -21,7 +21,26 @@
             type="text"
             id="search"
             placeholder="¿Qué buscar hoy?"
+            [(ngModel)]="searchTerm"
+            (input)="searchProducts()"
+            (blur)="closeSearchResults()"
+            name="search"
           />
+        </div>
+        
+        <!-- Resultados de búsqueda -->
+        <div *ngIf="showResults && searchResults.length > 0" class="absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg max-h-80 overflow-y-auto">
+          <ul class="py-1">
+            <li *ngFor="let producto of searchResults" 
+                class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="navigateToProduct(producto.id)">
+              <img [src]="producto.imagen" [alt]="producto.nombre" class="w-10 h-10 object-cover rounded mr-3">
+              <div>
+                <div class="font-medium">{{ producto.nombre }}</div>
+                <div class="text-sm text-gray-500">{{ producto.precio | currency:'EUR' }}</div>
+              </div>
+            </li>
+          </ul>
         </div>
       </form>
     </div>
@@ -53,7 +72,7 @@
 
   <!-- Barra de búsqueda en móvil -->
   <div class="mt-4 sm:hidden">
-    <form action="#" class="w-full">
+    <form (submit)="$event.preventDefault(); searchProducts()" class="w-full relative">
       <div class="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-gray-100 overflow-hidden hover:bg-gray-200">
         <div class="grid place-items-center h-full w-12 text-gray-300">
           <img src="./assets/icons/search.svg" alt="search-icon">
@@ -63,7 +82,26 @@
           type="text"
           id="search-mobile"
           placeholder="¿Qué buscar hoy?"
+          [(ngModel)]="searchTerm"
+          (input)="searchProducts()"
+          (blur)="closeSearchResults()"
+          name="search-mobile"
         />
+      </div>
+      
+      <!-- Resultados de búsqueda móvil -->
+      <div *ngIf="showResults && searchResults.length > 0" class="absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg max-h-80 overflow-y-auto">
+        <ul class="py-1">
+          <li *ngFor="let producto of searchResults" 
+              class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+              (click)="navigateToProduct(producto.id)">
+            <img [src]="producto.imagen" [alt]="producto.nombre" class="w-10 h-10 object-cover rounded mr-3">
+            <div>
+              <div class="font-medium">{{ producto.nombre }}</div>
+              <div class="text-sm text-gray-500">{{ producto.precio | currency:'EUR' }}</div>
+            </div>
+          </li>
+        </ul>
       </div>
     </form>
   </div>

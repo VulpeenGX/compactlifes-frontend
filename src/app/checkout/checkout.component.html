@@ -206,3 +206,17 @@
     </div>
   </div>
 </div>
+
+<!-- Mensaje de agradecimiento cuando se completa el pedido -->
+<div *ngIf="orderCompleted" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+  <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Gracias por tu compra!</h2>
+    <p class="text-gray-600 mb-4">Tu pedido ha sido procesado correctamente.</p>
+    <p class="text-gray-800 font-medium mb-6">Número de pedido: <span class="text-blue-600">{{ orderNumber }}</span></p>
+    <p class="text-sm text-gray-500 mb-4">Hemos enviado un correo electrónico con los detalles de tu compra.</p>
+    <p class="text-sm text-gray-500">Serás redirigido a la página principal en unos segundos...</p>
+  </div>
+</div>
