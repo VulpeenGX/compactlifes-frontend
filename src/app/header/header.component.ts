@@ -155,7 +155,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpiar todas las suscripciones
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -172,7 +171,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Nueva función para buscar productos
   searchProducts(): void {
     if (this.searchTerm.trim() === '') {
       this.searchResults = [];
@@ -184,7 +182,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.searchResults = productos.filter((producto: Producto) => 
         producto.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         producto.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
-      ).slice(0, 5); // Limitamos a 5 resultados para no sobrecargar la UI
+      ).slice(0, 5); 
       
       this.showResults = this.searchResults.length > 0;
     });

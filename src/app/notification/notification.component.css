@@ -76,7 +76,6 @@
   }
 }
 
-/* Nuevos estilos para carrito y wishlist */
 .cart .notification-content::before,
 .wishlist .notification-content::before {
   margin-right: 10px;

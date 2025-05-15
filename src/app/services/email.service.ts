@@ -11,7 +11,7 @@ export class EmailService {
   private serviceId = 'service_hkp1zea'; 
   private templateId = 'template_r3wlcuw'; 
   private userId = 'R2wMGaN5EQnOgQITm'; 
-  private baseUrl = 'https://compactlifes.netlify.app'; // URL base para imágenes absolutas
+  private baseUrl = 'https://compactlifes.netlify.app'; 
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +23,6 @@ export class EmailService {
   sendOrderConfirmation(orderData: any): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
-    // Asegurarse de que el total sea un número antes de usar toFixed
     const total = typeof orderData.total === 'number' ? 
       orderData.total.toFixed(2) + ' €' : 
       orderData.total + ' €';
@@ -40,7 +39,6 @@ export class EmailService {
       });
     }
     
-    // Crear objeto de datos simplificado para EmailJS
     const emailData = {
       service_id: this.serviceId,
       template_id: this.templateId,
@@ -61,7 +59,6 @@ export class EmailService {
 
     console.log('Enviando datos a EmailJS:', JSON.stringify(emailData));
 
-    // Enviar solicitud a EmailJS
     return this.http.post(this.apiUrl, emailData, { 
       headers,
       responseType: 'text' 
@@ -82,7 +79,6 @@ export class EmailService {
     
     items.forEach(item => {
       try {
-        // Convertir precio a número usando parseFloat para mayor seguridad
         const itemPrecio = parseFloat(String(item.precio)) || 0;
         const descuento = parseFloat(String(item.descuento)) || 0;
         
@@ -90,7 +86,6 @@ export class EmailService {
           (itemPrecio - (itemPrecio * descuento / 100)).toFixed(2) : 
           itemPrecio.toFixed(2);
         
-        // Crear fila de tabla HTML para el producto (sin imagen)
         itemsHtml += `
           <tr>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.nombre}</td>

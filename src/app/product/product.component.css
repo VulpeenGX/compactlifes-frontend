@@ -22,8 +22,7 @@
   animation: fadeIn 0.3s ease-in;
 }
 
-/* Estilos para los productos relacionados */
-/* Contenedor de imagen principal del producto */
+
 .product-image-container {
   display: flex;
   justify-content: center;
@@ -43,7 +42,7 @@
 
 /* Miniaturas de productos relacionados */
 .product-thumbnail {
-  height: 224px; /* Altura fija para todas las miniaturas */
+  height: 224px; 
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -54,7 +53,7 @@
 .product-thumbnail img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Mantiene la relación de aspecto y cubre el contenedor */
+  object-fit: cover; 
 }
 
 /* Overlay para acciones en productos relacionados */

@@ -56,21 +56,11 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   maxPossiblePrice: number = 1000;
   showOnlyInStock: boolean = false;
   showOnlyDiscounted: boolean = false;
-  
-  // Ordenamiento
   sortOption: string = 'default';
-  
-  // Categorías y estancias disponibles
   availableCategories: Categoria[] = [];
   availableEstancias: Estancia[] = [];
-  
-  // Suscripciones
   private subscriptions: Subscription[] = [];
-  
-  // Estado del filtro lateral en móvil
   showFilters: boolean = false;
-
-  // Nombre del filtro aplicado
   filtroNombre: string = '';
 
   constructor(
@@ -79,19 +69,16 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     private wishlistService: WishlistService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
-    private router: Router // Asegurarse de que el Router esté inyectado
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
-    // Suscribirse a los cambios en los parámetros de la URL
     this.subscriptions.push(
       this.route.queryParams.subscribe(params => {
-        // Limpiar filtros previos
         this.selectedCategories = [];
         this.selectedEstancias = [];
         this.filtroNombre = '';
         
-        // Aplicar filtros según los parámetros
         if (params['categoria']) {
           const categoriaId = Number(params['categoria']);
           this.selectedCategories = [categoriaId];
@@ -106,14 +93,12 @@ export class ProductListingComponent implements OnInit, OnDestroy {
           this.filtroNombre = params['nombre'];
         }
         
-        // Cargar datos después de procesar los parámetros
         this.loadData();
       })
     );
   }
 
   loadData(): void {
-    // Cargar productos, categorías y estancias simultáneamente
     const products$ = this.apiService.getProducts();
     const categories$ = this.apiService.getCategorias();
     const estancias$ = this.apiService.getEstancias();
@@ -123,28 +108,16 @@ export class ProductListingComponent implements OnInit, OnDestroy {
         this.allProducts = productsData;
         this.availableCategories = categoriesData;
         this.availableEstancias = estanciasData;
-        
-        // Establecer rango de precios basado en los productos
         this.setPriceRange();
-        
-        // Actualizar nombres de filtros si están aplicados por ID
         this.updateFilterNames();
-        
-        // Aplicar filtros iniciales
         this.applyFilters();
       })
     );
   }
 
-  // Nuevo método para actualizar los nombres de los filtros
   updateFilterNames(): void {
-    // Reiniciar el nombre del filtro
     this.filtroNombre = '';
-    
-    // Crear un array para almacenar los nombres de los filtros
     const filtrosSeleccionados: string[] = [];
-    
-    // Añadir nombres de categorías seleccionadas
     if (this.selectedCategories.length > 0) {
       this.selectedCategories.forEach(categoriaId => {
         const categoria = this.availableCategories.find(cat => cat.id === categoriaId);
@@ -154,7 +127,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       });
     }
     
-    // Añadir nombres de estancias seleccionadas
     if (this.selectedEstancias.length > 0) {
       this.selectedEstancias.forEach(estanciaId => {
         const estancia = this.availableEstancias.find(est => est.id === estanciaId);
@@ -164,7 +136,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       });
     }
     
-    // Combinar los nombres de filtros (máximo 2 para no sobrecargar la UI)
     if (filtrosSeleccionados.length === 1) {
       this.filtroNombre = filtrosSeleccionados[0];
     } else if (filtrosSeleccionados.length > 1) {
@@ -176,10 +147,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   toggleEstanciaFilter(estanciaId: number): void {
     const index = this.selectedEstancias.indexOf(estanciaId);
     if (index === -1) {
-      // Añadir la estancia a la selección sin eliminar las anteriores
       this.selectedEstancias.push(estanciaId);
       
-      // Actualizar el nombre del filtro solo si no hay ninguno
       if (!this.filtroNombre) {
         const estancia = this.availableEstancias.find(est => est.id === estanciaId);
         if (estancia) {
@@ -187,10 +156,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      // Si deseleccionamos la estancia, quitarla de la lista
       this.selectedEstancias.splice(index, 1);
       
-      // Actualizar el nombre del filtro si ya no hay estancias seleccionadas
       if (this.selectedEstancias.length === 0) {
         this.filtroNombre = '';
       }
@@ -200,7 +167,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
 
   setPriceRange(): void {
     if (this.allProducts.length > 0) {
-      // Usar precios sin descuento
       const prices = this.allProducts.map(p => p.precio);
       this.minPossiblePrice = Math.min(...prices);
       this.maxPossiblePrice = Math.max(...prices);
@@ -212,10 +178,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   toggleCategoryFilter(categoryId: number): void {
     const index = this.selectedCategories.indexOf(categoryId);
     if (index === -1) {
-      // Añadir la categoría a la selección sin eliminar las anteriores
       this.selectedCategories.push(categoryId);
       
-      // Actualizar el nombre del filtro solo si no hay ninguno
       if (!this.filtroNombre) {
         const categoria = this.availableCategories.find(cat => cat.id === categoryId);
         if (categoria) {
@@ -223,10 +187,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      // Si deseleccionamos la categoría, quitarla de la lista
       this.selectedCategories.splice(index, 1);
       
-      // Actualizar el nombre del filtro si ya no hay categorías seleccionadas
       if (this.selectedCategories.length === 0) {
         this.filtroNombre = '';
       }
@@ -238,7 +200,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   applyFilters(): void {
     let filtered = [...this.allProducts];
     
-    // Filtrar por término de búsqueda
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(product => 
@@ -247,14 +208,12 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       );
     }
     
-    // Filtrar por categorías seleccionadas
     if (this.selectedCategories.length > 0) {
       filtered = filtered.filter(product => 
         product.categoria && this.selectedCategories.includes(product.categoria)
       );
     }
     
-    // Filtrar por estancias seleccionadas
     if (this.selectedEstancias.length > 0) {
       filtered = filtered.filter(product => 
         product.estancia !== undefined && product.estancia !== null && 
@@ -262,23 +221,19 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       );
     }
     
-    // Filtrar por rango de precio (sin considerar descuentos)
     filtered = filtered.filter(product => 
       product.precio >= this.priceRange.min && 
       product.precio <= this.priceRange.max
     );
     
-    // Filtrar por stock
     if (this.showOnlyInStock) {
       filtered = filtered.filter(product => product.stock);
     }
     
-    // Filtrar por descuento
     if (this.showOnlyDiscounted) {
       filtered = filtered.filter(product => product.descuento && product.descuento > 0);
     }
     
-    // Aplicar ordenamiento
     this.applySorting(filtered);
   }
 
@@ -367,7 +322,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     return 'Sin estancia';
   }
 
-  // Estado de las secciones de filtro (acordeón)
   showCategorySection: boolean = true;
   showEstanciaSection: boolean = false;
   showPriceSection: boolean = true;
@@ -389,7 +343,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     this.showOptionsSection = !this.showOptionsSection;
   }
 
-  // Añadir método para navegar al producto
   navigateToProduct(productId: number): void {
     this.router.navigate(['/product'], { queryParams: { id: productId } });
   }

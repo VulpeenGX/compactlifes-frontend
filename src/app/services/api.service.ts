@@ -38,7 +38,6 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/api/productos/${id}/`, { headers: this.getAuthHeaders() });
   }
 
-  // Métodos faltantes que causan errores
   getProductsOffers(): Observable<any> {
     return this.http.get(`${this.apiUrl}/api/productos/ofertas/`, { headers: this.getAuthHeaders() });
   }

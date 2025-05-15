@@ -57,7 +57,6 @@ export class CartService {
     const existingItemIndex = currentCart.findIndex(item => item.id === product.id);
     
     if (existingItemIndex !== -1) {
-      // Si el producto ya está en el carrito, aumentar la cantidad
       const updatedCart = [...currentCart];
       updatedCart[existingItemIndex].quantity += quantity;
       this.cartSubject.next(updatedCart);
@@ -121,7 +120,6 @@ export class CartService {
     return this.http.post(`${this.apiUrl}cart/sync/${userId}`, { items: localCart });
   }
 
-  // Método para cargar el carrito del usuario desde el backend
   loadUserCart(userId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}cart/${userId}`);
   }

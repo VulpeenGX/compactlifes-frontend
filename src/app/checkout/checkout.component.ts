@@ -102,18 +102,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       })
     );
     
-    // Suscribirse al estado de autenticación
     this.subscriptions.push(
       this.authService.currentUser$.subscribe(user => {
         this.isLoggedIn = !!user;
         if (user) {
-          // Actualizar los datos del usuario
           this.user.name = user.nombre;
           this.user.email = user.email;
           this.user.address = user.direccion;
           this.user.phone = user.telefono;
-          
-          // Prellenar el formulario con los datos del usuario
           this.shippingInfo.name = user.nombre + ' ' + user.apellido;
           this.shippingInfo.email = user.email;
           this.shippingInfo.address = user.direccion;
@@ -159,7 +155,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Método para verificar si el formulario es válido sin necesidad de enviarlo
   isFormValid(): boolean {
-    // Verificar campos obligatorios de envío
     if (!this.shippingInfo.name || !this.shippingInfo.email || 
         !this.shippingInfo.address || !this.shippingInfo.city || 
         !this.shippingInfo.postalCode || !this.shippingInfo.phone) {
@@ -200,13 +195,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return true;
   }
   
-  // Validación de código postal español (01000 a 52999)
   validatePostalCode(postalCode: string): boolean {
     const pattern = /^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/;
     return pattern.test(postalCode);
   }
   
-  // Validación de número de teléfono español
   validatePhoneNumber(phone: string): boolean {
     const pattern = /^(?:\+34)?[6789]\d{8}$/;
     return pattern.test(phone);
@@ -216,7 +209,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return cvvRegex.test(cvv);
   }
   
-  // Validación de fecha de expiración (formato MM/AA y que no esté caducada)
   validateExpiryDate(expiryDate: string): boolean {
     const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
     if (!expiryRegex.test(expiryDate)) {
@@ -226,7 +218,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         const expiryMonth = parseInt(month, 10);
     const expiryYear = parseInt('20' + year, 10);
         const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // getMonth() devuelve 0-11
+    const currentMonth = currentDate.getMonth() + 1; 
     const currentYear = currentDate.getFullYear();
         if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
       return false;
@@ -260,7 +252,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         return sum % 10 === 0;
   }
 
-  // Método para marcar un campo como tocado
   validateField(fieldName: string): void {
     (this.fieldTouched as {[key: string]: boolean})[fieldName] = true;
     if (fieldName === 'paymentMethod') {
@@ -277,7 +268,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Método para mostrar errores cuando se hace clic en el botón deshabilitado
   showFormErrors(): void {
     Object.keys(this.fieldTouched).forEach(key => {
       (this.fieldTouched as {[key: string]: boolean})[key] = true;
@@ -349,7 +339,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
       
-      // Guardar el número de pedido para mostrarlo en el mensaje de agradecimiento
       this.orderNumber = order.orderNumber;
       this.orderCompleted = true;
       
@@ -359,7 +348,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           console.log('Correo enviado con éxito', response);
           this.cartService.clearCart();
           
-          // Redirigir al home después de 5 segundos
           setTimeout(() => {
             this.router.navigate(['/']);
           }, 5000);
@@ -367,12 +355,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Error al enviar el correo', error);
           
-          // Mostrar mensaje de error pero continuar con el proceso
           alert('Se ha procesado tu pedido correctamente, pero ha habido un problema al enviar el correo de confirmación. Por favor, contacta con soporte@compactlifes.com si no recibes la confirmación en tu correo.');
           
           this.cartService.clearCart();
           
-          // Redirigir al home después de 5 segundos
           setTimeout(() => {
             this.router.navigate(['/']);
           }, 5000);
