@@ -1,59 +1,88 @@
-# Frontend
+# CompactLifes Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+Este proyecto es el frontend de la aplicación web CompactLifes, una tienda en línea especializada en muebles y accesorios para espacios reducidos. Desarrollado con Angular 19.2.0, ofrece una interfaz de usuario moderna y responsive.
 
-## Development server
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/user/repo/actions) [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT) [![Version](https://img.shields.io/badge/version-1.0.0-orange)](https://example.com)
 
-To start a local development server, run:
+## Requisitos Previos
+- Node.js (versión 16.x o superior)
+- npm (versión 8.x o superior)
+- Angular CLI (versión 19.2.0)
 
-```bash
-ng serve
-```
+## Instalación
+1. Clona el repositorio:
+   ```
+   git clone <url-del-repositorio>
+   ```
+2. Navega al directorio del proyecto:
+   ```
+   cd Frontend
+   ```
+3. Instala las dependencias:
+   ```
+   npm install
+   ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Ejecución
+### Servidor de desarrollo
+   ```
+   ng serve
+   ```
+Navega a [http://localhost:4200/](http://localhost:4200/) para ver la aplicación en funcionamiento.
 
-## Code scaffolding
+### Compilación para producción
+   ```
+   ng build --prod
+   ```
+Los archivos compilados se almacenarán en el directorio dist/.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Estructura del Proyecto
+El proyecto sigue la estructura estándar de Angular con los siguientes componentes principales:
 
-```bash
-ng generate component component-name
-```
+- account: Gestión de la cuenta de usuario
+- auth-component: Componentes de autenticación (login/registro)
+- banner: Banners promocionales
+- carousel/carousel2: Carruseles de productos destacados
+- cart: Gestión del carrito de compras
+- checkout: Proceso de pago
+- collage-images: Galería de imágenes
+- faq: Preguntas frecuentes
+- footer: Pie de página
+- header: Cabecera de la aplicación
+- home-view-component: Vista principal de la página de inicio
+- interceptors: Interceptores HTTP para autenticación
+- notification: Sistema de notificaciones
+- page404: Página de error 404
+- product/product-listing: Visualización de productos
+- services: Servicios para la comunicación con el backend
+- wishlist: Lista de deseos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Pruebas
+   ```
+   ng test
+   ```
 
-```bash
-ng generate --help
-```
+## Contribución
+Para contribuir al proyecto, por favor sigue estos pasos:
 
-## Building
+1. Crea una rama para tu funcionalidad ( `git checkout -b feature/nueva-funcionalidad` )
+2. Realiza tus cambios.
+3. Haz commit de tus cambios ( `git commit -m 'Añadir nueva funcionalidad'` )
+4. Sube tus cambios a la rama ( `git push origin feature/nueva-funcionalidad` )
+5. Abre un Pull Request.
 
-To build the project run:
+## Características
+- Interfaz de usuario moderna y receptiva.
+- Gestión completa de cuentas de usuario.
+- Sistema de autenticación (login y registro).
+- Funcionalidad de carrito de compras.
+- Opción de lista de deseos.
 
-```bash
-ng build
-```
+## Preguntas Frecuentes
+1. **¿Cuál es la versión mínima de Node.js necesaria?**  
+   La versión mínima es 16.x.
+2. **¿Cómo puedo contribuir al proyecto?**  
+   Por favor, sigue las instrucciones en la sección de contribución.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Soporte
+Si tienes preguntas o necesitas ayuda, por favor contacta a nuestro equipo de soporte a través de [Contacto](mailto:support@compactlifes.com).
