@@ -15,7 +15,7 @@
     </div>
 
     <!-- product-detail -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8" *ngIf="producto && !cargando">
+    <div id="product-detail" class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8" *ngIf="producto && !cargando">
         <div class="product-image-container">
             <img [src]="producto.imagen" [alt]="producto.nombre" class="w-full h-auto max-h-[500px] object-contain rounded-lg shadow-md">
         </div>

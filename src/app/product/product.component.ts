@@ -56,6 +56,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Hacer scroll al inicio de la página cuando se carga el componente
+    window.scrollTo(0, 0);
+    
     this.subscriptions.push(
       this.route.queryParams.subscribe(params => {
         const productId = params['id'];
@@ -320,7 +323,8 @@ export class ProductComponent implements OnInit, OnDestroy {
   navigateToProduct(productId: number) {
     this.router.navigate(['/product'], { queryParams: { id: productId } })
       .then(() => {
-        window.scrollTo(0, 400);
+        // Hacer scroll al inicio de la página
+        window.scrollTo(0, 0);
       });
   }
 
