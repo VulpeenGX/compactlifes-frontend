@@ -344,7 +344,11 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   }
 
   navigateToProduct(productId: number): void {
-    this.router.navigate(['/product'], { queryParams: { id: productId } });
+    this.router.navigate(['/product'], { queryParams: { id: productId } })
+      .then(() => {
+        // Desplazar la página hacia arriba después de la navegación
+        window.scrollTo(0, 400);
+      });
   }
 
   ngOnDestroy(): void {
