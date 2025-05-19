@@ -318,7 +318,10 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   navigateToProduct(productId: number) {
-    this.router.navigate(['/product'], { queryParams: { id: productId } });
+    this.router.navigate(['/product'], { queryParams: { id: productId } })
+      .then(() => {
+        window.scrollTo(0, 400);
+      });
   }
 
   // Método para manejar errores de carga de imágenes
